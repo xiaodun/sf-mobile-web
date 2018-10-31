@@ -1,14 +1,57 @@
+<style lang="less">
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+
+  color: #2c3e50;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @width: 400px;
+
+  #qrcode-id {
+    display: block;
+
+    transition: none;
+    text-align: center;
+  }
+
+  #mint-ui-id {
+    position: fixed;
+
+    display: block;
+
+    width: @width;
+    height: 100%;
+    margin-left: 10px;
+
+    border-left: 1px solid #ccc;
+  }
+
+  .main-wrapper {
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-left: @width + 20px;
+
+    border-left: 1px solid #ccc;
+  }
+}
+
+</style>
 <template>
   <div id="app">
-    <a href="https://mint-ui.github.io/docs/#/zh-cn2" target="_blank">Mint UI</a>
-    <div id="qrcode-id" ref="qrcode"></div>
-    <div class="page-loadmore">
-      <div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px', 'overflow-y': 'auto' }">
-        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-          <ul>
-            <li :key="index" v-for="(item,index) in list">{{ item }}</li>
-          </ul>
-        </mt-loadmore>
+    <iframe id="mint-ui-id"  src="https://mint-ui.github.io/docs/#/zh-cn2/infinite-scroll" frameborder="0"></iframe>
+    <div class="main-wrapper">
+
+      <div id="qrcode-id" ref="qrcode"></div>
+      <div class="practice">
+        <ul v-infinite-scroll>
+
+        </ul>
       </div>
     </div>
     <!-- <router-view /> -->
@@ -31,18 +74,6 @@ export default {
     QRCode,
   },
   methods: {
-    loadTop() {
-      this.list.push(4);
-      this.$refs.loadmore.onTopLoaded();
-    },
-    handleBottomChange(status) {
-      this.bottomStatus = status;
-    },
-
-    loadBottom() {
-      this.list.push(12);
-      this.$refs.loadmore.onBottomLoaded();
-    },
     createQecode() {
       this.$refs.qrcode.innerHTML = '';
       if (
@@ -65,58 +96,4 @@ export default {
 };
 </script>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
-  margin-top: 60px;
-
-  color: #2c3e50;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  #qrcode-id {
-    display: inline-block;
-
-    transition: none;
-    text-align: center;
-  }
-}
-
-.director-mail {
-  .page-loadmore {
-    overflow: scroll;
-
-    margin-top: 40px;
-
-    .page-loadmore-list {
-      .page-loadmore-listitem {
-        line-height: 100px;
-
-        height: 100px;
-
-        text-align: center;
-
-        border-bottom: solid 1px #eee;
-      }
-    }
-
-    .mint-loadmore-bottom {
-      span {
-        display: inline-block;
-
-        transition: .2s linear;
-        vertical-align: middle;
-      }
-
-      .mint-spinner {
-        display: inline-block;
-
-        vertical-align: middle;
-      }
-    }
-  }
-}
-
-</style>
