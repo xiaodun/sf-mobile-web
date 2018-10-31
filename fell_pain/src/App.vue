@@ -39,6 +39,16 @@
 
     border-left: 1px solid #ccc;
   }
+
+  @media screen and (max-width: 640px) {
+    #mint-ui-id {
+      display: none;
+    }
+
+    .main-wrapper {
+      padding-left: 10px;
+    }
+  }
 }
 
 </style>

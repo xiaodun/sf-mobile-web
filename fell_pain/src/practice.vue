@@ -5,9 +5,10 @@
     
 
      
-    <ul v-infinite-scroll="loadMore" infinite-scroll-distance="10" infinite-scroll-disbaled="loading">
+    <ul style="height:150px;overflow:scroll;" v-infinite-scroll="loadMore" infinite-scroll-distance="10" infinite-scroll-disabled="loading">
 
-        </ul>
+        <li :key="index" v-for="(item,index) in list">{{ item }}</li>
+    </ul>
       
     
   </div>
@@ -17,11 +18,22 @@
 export default {
   name: 'Practice',
   data() {
-    return {};
+    return {
+      list: [1, 2, 3, 4],
+    };
   },
 
   methods: {
-    loadMore() {},
+    loadMore() {
+      this.loading = true;
+      setTimeout(() => {
+        let last = this.list[this.list.length - 1];
+        for (let i = 1; i <= 10; i++) {
+          this.list.push(last + i);
+        }
+        this.loading = false;
+      }, 500);
+    },
   },
   mounted() {},
 };
