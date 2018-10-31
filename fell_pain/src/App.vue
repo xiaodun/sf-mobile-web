@@ -49,9 +49,7 @@
 
       <div id="qrcode-id" ref="qrcode"></div>
       <div class="practice">
-        <ul v-infinite-scroll>
-
-        </ul>
+        <Practice></Practice>
       </div>
     </div>
     <!-- <router-view /> -->
@@ -60,6 +58,7 @@
 
 <script>
 import QRCode from 'qrcodejs2';
+import Practice from './practice.vue';
 export default {
   name: 'App',
   data() {
@@ -72,8 +71,10 @@ export default {
   },
   components: {
     QRCode,
+    Practice,
   },
   methods: {
+    loadMore() {},
     createQecode() {
       this.$refs.qrcode.innerHTML = '';
       if (
