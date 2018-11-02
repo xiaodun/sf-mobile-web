@@ -78,7 +78,6 @@ var server = http_os.createServer (function (request, response) {
               'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
               'Accept-Ranges': 'bytes',
               'Content-Length': chunksize,
-              'Content-Type': 'video/mp4',
             });
 
             var stream = file_os
