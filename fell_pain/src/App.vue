@@ -11,42 +11,10 @@
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @width: 400px;
-
-  #qrcode-id {
-    display: block;
-
-    transition: none;
-    text-align: center;
-  }
-
-  #mint-ui-id {
-    position: fixed;
-
-    display: block;
-
-    width: @width;
-    height: 100%;
-    margin-left: 10px;
-
-    border-left: 1px solid #ccc;
-  }
-
-  .main-wrapper {
-    box-sizing: border-box;
-    padding-top: 10px;
-    padding-left: @width + 20px;
-
-    border-left: 1px solid #ccc;
-  }
 
   @media screen and (max-width: 640px) {
-    #mint-ui-id {
+    #qrcode-id {
       display: none;
-    }
-
-    .main-wrapper {
-      padding-left: 10px;
     }
   }
 }
@@ -54,37 +22,25 @@
 </style>
 <template>
   <div id="app">
-    <iframe id="mint-ui-id"  src="https://mint-ui.github.io/docs/#/zh-cn2/infinite-scroll" frameborder="0"></iframe>
-    <div class="main-wrapper">
-
-      <div id="qrcode-id" ref="qrcode"></div>
-      <div class="practice">
-        <Practice></Practice>
-      </div>
-    </div>
+    <div id="qrcode-id" ref="qrcode"></div>
     <!-- <router-view /> -->
+    <Player></Player>
   </div>
 </template>
 
 <script>
 import QRCode from 'qrcodejs2';
-import Practice from './practice.vue';
+import Player from '@/components/tools/player.vue';
 export default {
   name: 'App',
   data() {
-    return {
-      list: [1, 2, 3, 4, 1],
-      allLoaded: false,
-      bottomStatus: '',
-      wrapperHeight: 200,
-    };
+    return {};
   },
   components: {
     QRCode,
-    Practice,
+    Player,
   },
   methods: {
-    loadMore() {},
     createQecode() {
       this.$refs.qrcode.innerHTML = '';
       if (

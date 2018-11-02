@@ -2,10 +2,11 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path');
-var os = require('os');
+const path = require ('path');
+var os = require ('os');
 var IPv4 = 'localhost';
-let network = os.networkInterfaces();
+var readFile = require("fs");
+let network = os.networkInterfaces ();
 
 //动态的获取本机IP地址
 for (let key in network) {
@@ -16,12 +17,24 @@ for (let key in network) {
     }
   }
 }
+
+//获取内置服务器的配置
+let bultinService = {
+  path:"./service/app/config.json"
+}
+bultinService.config = JSON.parse(readFile.readFileSync(bultinService.path,"utf-8"));
+
+
 module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      ['/'+bultinService.config.prefix]: {
+        target: `http://${IPv4}:${bultinService.config.port}/`,
+      },
+    },
 
     // Various Dev Server settings
     host: IPv4, // can be overwritten by process.env.HOST
@@ -56,10 +69,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve (__dirname, '../dist/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve (__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 
