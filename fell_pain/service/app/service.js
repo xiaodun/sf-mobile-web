@@ -25,13 +25,6 @@ var server = http_os.createServer (function (request, response) {
       command = urlElementsArr[3].slice (0, paramsPos);
     }
 
-    if (command.includes ('.')) {
-      response.writeHead (200, {
-        'Content-Type': 'application/json',
-      });
-      response.end (JSON.stringify ({}));
-      return;
-    }
     //对播放器应用的额外处理
     let external = {};
     if (dataName === 'player') {
@@ -57,6 +50,48 @@ var server = http_os.createServer (function (request, response) {
         });
 
         external.moveList = moveList;
+      } else {
+        //获取视频
+        if (command.includes ('.')) {
+          var filePath = path + '/' + decodeURIComponent (command);
+
+          file_os.stat (filePath, function (error, stats) {
+            if (error) {
+              if (error.code === 'ENOENT') {
+                // 404 Error if file not found
+                return response.sendStatus (404);
+              }
+              response.end (error);
+            }
+            var range = request.headers.range;
+            if (!range) {
+              // 416 Wrong range
+              return response.sendStatus (416);
+            }
+            var positions = range.replace (/bytes=/, '').split ('-');
+            var start = parseInt (positions[0], 10);
+            var total = stats.size;
+            var end = positions[1] ? parseInt (positions[1], 10) : total - 1;
+            var chunksize = end - start + 1;
+
+            response.writeHead (206, {
+              'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+              'Accept-Ranges': 'bytes',
+              'Content-Length': chunksize,
+              'Content-Type': 'video/mp4',
+            });
+
+            var stream = file_os
+              .createReadStream (filePath, {start: start, end: end})
+              .on ('open', function () {
+                stream.pipe (response);
+              })
+              .on ('error', function (err) {
+                response.end (err);
+              });
+          });
+          return;
+        }
       }
     }
 

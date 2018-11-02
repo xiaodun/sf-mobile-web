@@ -42,21 +42,12 @@ export default {
       });
     },
     request_player_play(argMove) {
-      //   this.$refs.videoDom.src =
-      //     '/api' + '/' + this.requestPlayerPrefix + '/' + argMove.name;
-      AxiosHelper.request({
-        method: 'post',
-        url: this.requestPlayerPrefix + '/play',
-        responseType: 'arraybuffer',
-        data: {
-          move: argMove,
-        },
-      }).then(response => {
-        var blob = response.data;
-        console.log(blob);
-
-        this.active.src = URL.createObjectURL(blob);
-      });
+      this.$refs.videoDom.src =
+        '/api' +
+        '/' +
+        this.requestPlayerPrefix +
+        '/' +
+        encodeURIComponent(argMove.name);
     },
     player(argMove) {
       this.request_player_play(argMove);
