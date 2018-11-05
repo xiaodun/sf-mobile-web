@@ -1,41 +1,41 @@
 <style lang="less">
 #player-vue-id {
-  box-sizing: border-box;
+  width: 100%;
   height: 100%;
-  padding: 10px 10px 0;
-
+  box-sizing: border-box;
+  padding: 0px 10px;
   &.type-1 {
-    #video-id {
+    padding-top: 170px;
+    .video-wrapper {
       position: fixed;
+      left: 10px;
       right: 10px;
-      left: 20px;
-
       display: block;
-
-      width: auto;
-
-// top: 0;
-      margin-right: 10px;
-      margin-left: 30px;
-    }
-
-    .list-wrapper {
-      margin-top: 20%;
+      top: 0px;
+      height: 150px;
     }
   }
-
+  .video-wrapper {
+    padding-top: 10px;
+    background-color: #fff;
+    height: 45%;
+  }
+  .list-wrapper {
+    margin-top: 15px;
+  }
   #video-id {
     width: 100%;
-    height: 45%;
-
+    height: 100%;
     background: black;
   }
 }
-
 </style>
 <template>
   <div id='player-vue-id' ref="parentDom">
-    <video ref="videoDom" id="video-id" controls :src="active.src"></video>
+    <div class="video-wrapper">
+
+      <video ref="videoDom" id="video-id" controls :src="active.src"></video>
+    </div>
     <div class="list-wrapper">
       <div class="move" :key="item.id" v-for="item in moveList">
         <div @click="player(item)">{{item.name}}</div>
@@ -44,52 +44,52 @@
   </div>
 </template>
 <script>
-import AxiosHelper from '@/assets/lib/AxiosHelper.js';
+import AxiosHelper from "@/assets/lib/AxiosHelper.js";
 export default {
-  name: 'player_vue',
+  name: "player_vue",
   data() {
     return {
-      requestPlayerPrefix: '/player/player',
+      requestPlayerPrefix: "/player/player",
       active: {
-        src: '',
+        src: ""
       },
-      moveList: [],
+      moveList: []
     };
   },
   methods: {
     request_player_get() {
       AxiosHelper.request({
-        method: 'post',
-        url: this.requestPlayerPrefix + '/get',
-        data: {},
+        method: "post",
+        url: this.requestPlayerPrefix + "/get",
+        data: {}
       }).then(response => {
         this.moveList = response.data;
       });
     },
     request_player_play(argMove) {
       this.$refs.videoDom.src =
-        '/api' +
-        '/' +
+        "/api" +
+        "/" +
         this.requestPlayerPrefix +
-        '/' +
+        "/" +
         encodeURIComponent(argMove.name);
     },
     player(argMove) {
       this.request_player_play(argMove);
-    },
+    }
   },
   computed: {},
   mounted() {
-    document.documentElement.addEventListener('scroll', () => {
-      let scrollTop = document.body.scrollTop;
+    window.addEventListener("scroll", () => {
+      let scrollTop = document.documentElement.scrollTop;
       console.log(scrollTop);
       if (scrollTop >= 10) {
-        this.$refs.parentDom.classList.add('type-1');
+        this.$refs.parentDom.classList.add("type-1");
       } else {
-        this.$refs.parentDom.classList.remove('type-1');
+        this.$refs.parentDom.classList.remove("type-1");
       }
     });
     this.request_player_get();
-  },
+  }
 };
 </script>

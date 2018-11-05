@@ -14,7 +14,6 @@ body,
 body {
   overflow-y: auto;
 }
-
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
 
@@ -32,7 +31,7 @@ body {
 </style>
 <template>
   <div id="app">
-    <div id="qrcode-id" ref="qrcode"></div>
+    <!-- <div id="qrcode-id" ref="qrcode"></div> -->
     <!-- <router-view /> -->
     <Player></Player>
   </div>
