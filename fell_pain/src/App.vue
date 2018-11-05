@@ -5,7 +5,7 @@
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -18,7 +18,6 @@
     }
   }
 }
-
 </style>
 <template>
   <div id="app">
@@ -29,37 +28,38 @@
 </template>
 
 <script>
-import QRCode from 'qrcodejs2';
-import Player from '@/components/tools/player.vue';
+import QRCode from "qrcodejs2";
+import Player from "@/components/tools/player.vue";
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {};
   },
   components: {
     QRCode,
-    Player,
+    Player
   },
   methods: {
     createQecode() {
-      this.$refs.qrcode.innerHTML = '';
+      this.$refs.qrcode.innerHTML = "";
       if (
-        window.location.hostname == 'localhost' ||
-        window.location.hostname == '127.0.0.1'
+        window.location.hostname == "localhost" ||
+        window.location.hostname == "127.0.0.1"
       ) {
-        this.$refs.qrcode.innerHTML = '请确保你连上了网络！';
+        this.$refs.qrcode.innerHTML = "请确保你连上了网络！";
       } else {
-        let qrcode = new QRCode('qrcode-id', {
+        console.log(window.location.href);
+        let qrcode = new QRCode("qrcode-id", {
           width: 232, // 设置宽度
           height: 232, // 设置高度
-          text: window.location.href,
+          text: window.location.href
         });
       }
-    },
+    }
   },
   mounted() {
     this.createQecode();
-  },
+  }
 };
 </script>
 
