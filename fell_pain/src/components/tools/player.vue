@@ -1,14 +1,12 @@
 <style lang="less">
 #player-vue-id {
-  overflow-y: auto;
-
   box-sizing: border-box;
   height: 100%;
   padding: 10px 10px 0;
 
   &.type-1 {
     #video-id {
-      position: absolute;
+      position: fixed;
       right: 10px;
       left: 20px;
 
@@ -37,7 +35,7 @@
 </style>
 <template>
   <div id='player-vue-id' ref="parentDom">
-    <div ref="videoDom" id="video-id" controls :src="active.src"></div>
+    <video ref="videoDom" id="video-id" controls :src="active.src"></video>
     <div class="list-wrapper">
       <div class="move" :key="item.id" v-for="item in moveList">
         <div @click="player(item)">{{item.name}}</div>
@@ -82,8 +80,9 @@ export default {
   },
   computed: {},
   mounted() {
-    this.$refs.parentDom.addEventListener('scroll', () => {
-      let scrollTop = this.$refs.parentDom.scrollTop;
+    document.documentElement.addEventListener('scroll', () => {
+      let scrollTop = document.body.scrollTop;
+      console.log(scrollTop);
       if (scrollTop >= 10) {
         this.$refs.parentDom.classList.add('type-1');
       } else {

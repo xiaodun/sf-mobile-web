@@ -11,6 +11,10 @@ body,
   height: 100%;
 }
 
+body {
+  overflow-y: auto;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
