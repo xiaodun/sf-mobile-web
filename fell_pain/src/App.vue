@@ -31,8 +31,7 @@ body {
 </style>
 <template>
   <div id="app">
-    <!-- <div id="qrcode-id" ref="qrcode"></div> -->
-    <!-- <router-view /> -->
+    <div id="qrcode-id" ref="qrcode"></div>
     <Player></Player>
   </div>
 </template>
