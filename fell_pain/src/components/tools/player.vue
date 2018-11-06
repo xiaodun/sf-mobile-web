@@ -22,6 +22,7 @@
   }
   .list-wrapper {
     margin-top: 15px;
+    padding-bottom: 40px;
   }
   #video-id {
     width: 100%;
@@ -32,15 +33,34 @@
 </style>
 <template>
   <div id='player-vue-id' ref="parentDom">
-    <div class="video-wrapper">
+    <mt-tab-container v-model="model">
+      <mt-tab-container-item id="player-tab-id">
+        <div class="video-wrapper">
 
-      <video ref="videoDom" id="video-id" controls :src="active.src"></video>
-    </div>
-    <div class="list-wrapper">
-      <div class="move" :key="item.id" v-for="item in moveList">
-        <div @click="player(item)">{{item.name}}</div>
-      </div>
-    </div>
+          <video ref="videoDom" id="video-id" controls :src="active.src"></video>
+        </div>
+        <div class="list-wrapper">
+          <div class="move" :key="item.id" v-for="item in moveList">
+            <div @click="player(item)">{{item.name}}</div>
+          </div>
+        </div>
+      </mt-tab-container-item>
+
+    </mt-tab-container>
+    <mt-tab-container id="config-tab-id">
+
+    </mt-tab-container>
+
+    <mt-tabbar fixed v-model="model">
+      <mt-tab-item id="player-tab-id">
+
+        播放器
+      </mt-tab-item>
+      <mt-tab-item id="config-tab-id">
+        配置
+      </mt-tab-item>
+    </mt-tabbar>
+
   </div>
 </template>
 <script>
@@ -49,6 +69,7 @@ export default {
   name: "player_vue",
   data() {
     return {
+      model: "player-tab-id",
       requestPlayerPrefix: "/player/player",
       active: {
         src: ""

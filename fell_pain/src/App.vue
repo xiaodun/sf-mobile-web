@@ -13,6 +13,7 @@ body,
 
 body {
   overflow-y: auto;
+  padding-bottom: 30px;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
