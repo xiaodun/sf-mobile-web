@@ -58,11 +58,11 @@ export default {
       ) {
         this.$refs.qrcode.innerHTML = "请确保你连上了网络！";
       } else {
-        console.log(window.location.href);
+        console.log(window.location.protocol + "//" + window.location.host);
         let qrcode = new QRCode("qrcode-id", {
           width: 232, // 设置宽度
           height: 232, // 设置高度
-          text: window.location.href
+          text: window.location.protocol + "//" + window.location.host
         });
       }
     }

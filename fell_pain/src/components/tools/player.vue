@@ -8,6 +8,7 @@
     padding-top: 170px;
     .video-wrapper {
       position: fixed;
+      z-index: 1000;
       left: 10px;
       right: 10px;
       display: block;
@@ -18,11 +19,19 @@
   .video-wrapper {
     padding-top: 10px;
     background-color: #fff;
-    height: 45%;
+    height: 250px;
   }
   .list-wrapper {
     margin-top: 15px;
-    padding-bottom: 40px;
+    margin-bottom: 40px;
+    .move {
+      &.active {
+        background-color: #7ce7ff;
+        .mint-cell-text {
+          // color: #fff;
+        }
+      }
+    }
   }
   #video-id {
     width: 100%;
@@ -40,9 +49,11 @@
           <video ref="videoDom" id="video-id" controls :src="active.src"></video>
         </div>
         <div class="list-wrapper">
-          <div class="move" :key="item.id" v-for="item in moveList">
-            <div @click="player(item)">{{item.name}}</div>
-          </div>
+          <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
+          </div> -->
+          <mt-cell-swipe :title="item.name" :label="item.id === item.name ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
+          </mt-cell-swipe>
+
         </div>
       </mt-tab-container-item>
 
@@ -72,7 +83,8 @@ export default {
       model: "player-tab-id",
       requestPlayerPrefix: "/player/player",
       active: {
-        src: ""
+        src: "",
+        id: ""
       },
       moveList: []
     };
@@ -96,6 +108,8 @@ export default {
         encodeURIComponent(argMove.name);
     },
     player(argMove) {
+      this.active.id = argMove.id;
+      console.log(this.active.id, argMove.id);
       this.request_player_play(argMove);
     }
   },
@@ -103,7 +117,6 @@ export default {
   mounted() {
     window.addEventListener("scroll", () => {
       let scrollTop = document.documentElement.scrollTop;
-      console.log(scrollTop);
       if (scrollTop >= 10) {
         this.$refs.parentDom.classList.add("type-1");
       } else {
