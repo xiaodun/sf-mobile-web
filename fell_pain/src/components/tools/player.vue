@@ -4,8 +4,16 @@
   height: 100%;
   box-sizing: border-box;
   padding: 0px 10px;
+  .player-tab {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .mint-tabbar.is-fixed {
+    z-index: 1000000;
+  }
+
   &.type-1 {
-    padding-top: 170px;
     .video-wrapper {
       position: fixed;
       z-index: 1000;
@@ -14,6 +22,9 @@
       display: block;
       top: 0px;
       height: 150px;
+    }
+    .list-wrapper {
+      padding-top: 170px;
     }
   }
   .video-wrapper {
@@ -26,7 +37,10 @@
     margin-bottom: 40px;
     .move {
       &.active {
-        background-color: #7ce7ff;
+        .mint-cell-wrapper {
+          background-color: #7ce7ff;
+          border-bottom: none;
+        }
         .mint-cell-text {
           // color: #fff;
         }
@@ -38,12 +52,16 @@
     height: 100%;
     background: black;
   }
+  #config-tab-id {
+  }
 }
 </style>
+
 <template>
   <div id='player-vue-id' ref="parentDom">
     <mt-tab-container v-model="model">
-      <mt-tab-container-item id="player-tab-id">
+      <mt-tab-container-item class='player-tab' id="player-tab-id">
+
         <div class="video-wrapper">
 
           <video ref="videoDom" id="video-id" controls :src="active.src"></video>
@@ -56,9 +74,47 @@
 
         </div>
       </mt-tab-container-item>
+      <mt-tab-container-item id="config-tab-id">
 
-    </mt-tab-container>
-    <mt-tab-container id="config-tab-id">
+        <localize-card>
+          <LocalizeIconfont slot="icon" icon="icon-cunchu1" size="16px"></LocalizeIconfont>
+          <div slot="title">电脑目录</div>
+          <div slot="content">
+            程序从电脑的 C:\sf-mobile-web\player\system\movie 获取视频
+          </div>
+        </localize-card>
+        <localize-card>
+          <LocalizeIconfont slot="icon" icon="icon-Shapecopy" size="16px"></LocalizeIconfont>
+          <div slot="title">上传本地视频</div>
+          <div slot="content">
+            <div>存储至:C:\sf-mobile-web\player\user\movie</div>
+          </div>
+        </localize-card>
+
+        <localize-card>
+          <LocalizeIconfont slot="icon" icon="icon-tianjiashipin-m" size="16px"></LocalizeIconfont>
+          <div slot="title">添加本地视频到列表</div>
+          <div slot="content">
+
+          </div>
+        </localize-card>
+        <localize-card>
+          <LocalizeIconfont slot="icon" icon="icon-guanyuruanjian" size="16px"></LocalizeIconfont>
+          <div slot="title">关于程序</div>
+          <div slot="content">
+            <p>
+
+              为了减缓手机内存的压力,自定义的本地视频播放体验,应个人需求而制作。
+            </p>
+            <p>
+
+              碍于浏览器支持的音频格式有限,无法播放视频实属正常!
+            </p>
+
+          </div>
+        </localize-card>
+
+      </mt-tab-container-item>
 
     </mt-tab-container>
 
@@ -75,6 +131,8 @@
   </div>
 </template>
 <script>
+import LocalizeCard from "@/Localize-UI/Localize-card";
+import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
 import AxiosHelper from "@/assets/lib/AxiosHelper.js";
 export default {
   name: "player_vue",
@@ -124,6 +182,15 @@ export default {
       }
     });
     this.request_player_get();
+  },
+  components: {
+    LocalizeCard,
+    LocalizeIconfont
+  },
+  watch: {
+    model() {
+      document.documentElement.scrollTop = 0;
+    }
   }
 };
 </script>

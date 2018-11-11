@@ -2,11 +2,11 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require ('path');
-var os = require ('os');
+const path = require('path');
+var os = require('os');
 var IPv4 = 'localhost';
 var readFile = require("fs");
-let network = os.networkInterfaces ();
+let network = os.networkInterfaces();
 
 //动态的获取本机IP地址
 for (let key in network) {
@@ -20,9 +20,9 @@ for (let key in network) {
 
 //获取内置服务器的配置
 let bultinService = {
-  path:"./service/app/config.json"
+  path: "./service/app/config.json"
 }
-bultinService.config = JSON.parse(readFile.readFileSync(bultinService.path,"utf-8"));
+bultinService.config = JSON.parse(readFile.readFileSync(bultinService.path, "utf-8"));
 
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      ['/'+bultinService.config.prefix]: {
+      ['/' + bultinService.config.prefix]: {
         target: `http://${IPv4}:${bultinService.config.port}/`,
       },
     },
@@ -47,7 +47,7 @@ module.exports = {
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
-    useEslint: true,
+    useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,
@@ -69,10 +69,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve (__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
-    assetsRoot: path.resolve (__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 

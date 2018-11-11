@@ -6,20 +6,20 @@ import router from './router';
 import 'mint-ui/lib/style.css';
 import Vconsole from 'vconsole';
 
-import {Loadmore} from 'mint-ui';
+import { Loadmore } from 'mint-ui';
 import MintUI from 'mint-ui';
-import {Button} from 'mint-ui';
-let vconsole = new Vconsole ();
-Vue.config.productionTip = false;
-Vue.use (MintUI);
+import { Button } from 'mint-ui';
+// let vconsole = new Vconsole();
 
-Vue.component (Button.name, Button);
-Vue.component (Loadmore.name, Loadmore);
-console.log (Loadmore.name);
+Vue.config.productionTip = false;
+Vue.use(MintUI);
+
+Vue.component(Button.name, Button);
+Vue.component(Loadmore.name, Loadmore);
 /* eslint-disable no-new */
-new Vue ({
+new Vue({
   el: '#app',
   router,
-  components: {App},
+  components: { App },
   template: '<App/>',
 });
