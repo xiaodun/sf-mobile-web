@@ -40,8 +40,11 @@
 
     font-size: 14px;
     color: #456;
-    p {
+    > p {
       margin-bottom: 8px;
+    }
+    > .item {
+      margin-bottom: 4px;
     }
   }
   .line {
