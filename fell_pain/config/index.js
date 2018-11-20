@@ -5,7 +5,7 @@
 const path = require('path');
 var os = require('os');
 var IPv4 = 'localhost';
-var readFile = require("fs");
+var readFile = require('fs');
 let network = os.networkInterfaces();
 
 //动态的获取本机IP地址
@@ -20,10 +20,11 @@ for (let key in network) {
 
 //获取内置服务器的配置
 let bultinService = {
-  path: "./service/app/config.json"
-}
-bultinService.config = JSON.parse(readFile.readFileSync(bultinService.path, "utf-8"));
-
+  path: './service/app/config.json',
+};
+bultinService.config = JSON.parse(
+  readFile.readFileSync(bultinService.path, 'utf-8')
+);
 
 module.exports = {
   dev: {
@@ -33,6 +34,7 @@ module.exports = {
     proxyTable: {
       ['/' + bultinService.config.prefix]: {
         target: `http://${IPv4}:${bultinService.config.port}/`,
+        changeOrigin: false,
       },
     },
 

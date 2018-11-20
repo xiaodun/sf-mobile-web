@@ -131,66 +131,81 @@
   </div>
 </template>
 <script>
-import LocalizeCard from "@/Localize-UI/Localize-card";
-import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
-import AxiosHelper from "@/assets/lib/AxiosHelper.js";
+import LocalizeCard from '@/Localize-UI/Localize-card';
+import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
+import AxiosHelper from '@/assets/lib/AxiosHelper.js';
+import axios from 'axios';
 export default {
-  name: "player_vue",
+  name: 'player_vue',
   data() {
     return {
-      model: "player-tab-id",
-      requestPlayerPrefix: "/player/player",
+      model: 'player-tab-id',
+      requestPlayerPrefix: '/player/player',
       active: {
-        src: "",
-        id: ""
+        src: '',
+        id: '',
       },
-      moveList: []
+      moveList: [],
     };
   },
   methods: {
     request_player_get() {
       AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/get",
-        data: {}
+        method: 'post',
+        url: this.requestPlayerPrefix + '/get',
+        data: {},
+      }).then(response => {
+        this.moveList = response.data;
+      });
+    },
+    request_player_test() {
+      AxiosHelper.request({
+        // headers: {
+        //   'Content-type': 'application/json',
+        // },
+        method: 'post',
+        url: this.requestPlayerPrefix + '/test',
+        data: 12,
       }).then(response => {
         this.moveList = response.data;
       });
     },
     request_player_play(argMove) {
       this.$refs.videoDom.src =
-        "/api" +
-        "/" +
+        '/api' +
+        '/' +
         this.requestPlayerPrefix +
-        "/" +
+        '/' +
         encodeURIComponent(argMove.name);
     },
     player(argMove) {
       this.active.id = argMove.id;
       console.log(this.active.id, argMove.id);
       this.request_player_play(argMove);
-    }
+    },
   },
   computed: {},
   mounted() {
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       let scrollTop = document.documentElement.scrollTop;
       if (scrollTop >= 10) {
-        this.$refs.parentDom.classList.add("type-1");
+        this.$refs.parentDom.classList.add('type-1');
       } else {
-        this.$refs.parentDom.classList.remove("type-1");
+        this.$refs.parentDom.classList.remove('type-1');
       }
     });
     this.request_player_get();
+
+    this.request_player_test();
   },
   components: {
     LocalizeCard,
-    LocalizeIconfont
+    LocalizeIconfont,
   },
   watch: {
     model() {
       document.documentElement.scrollTop = 0;
-    }
-  }
+    },
+  },
 };
 </script>
