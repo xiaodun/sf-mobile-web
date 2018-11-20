@@ -1,14 +1,17 @@
 <style lang="less">
 #player-vue-id {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  padding: 0px 10px;
+  padding: 0 10px;
+
   .player-tab {
+    overflow-y: auto;
+
     width: 100%;
     height: 100%;
-    overflow-y: auto;
   }
+
   .mint-tabbar.is-fixed {
     z-index: 1000000;
   }
@@ -17,44 +20,53 @@
     .video-wrapper {
       position: fixed;
       z-index: 1000;
-      left: 10px;
+      top: 0;
       right: 10px;
+      left: 10px;
+
       display: block;
-      top: 0px;
+
       height: 150px;
     }
+
     .list-wrapper {
       padding-top: 170px;
     }
   }
+
   .video-wrapper {
-    padding-top: 10px;
-    background-color: #fff;
     height: 250px;
+    padding-top: 10px;
+
+    background-color: #fff;
   }
+
   .list-wrapper {
     margin-top: 15px;
     margin-bottom: 40px;
+
     .move {
       &.active {
         .mint-cell-wrapper {
-          background-color: #7ce7ff;
           border-bottom: none;
+          background-color: #7ce7ff;
         }
+
         .mint-cell-text {
           // color: #fff;
         }
       }
     }
   }
+
   #video-id {
     width: 100%;
     height: 100%;
+
     background: black;
   }
-  #config-tab-id {
-  }
 }
+
 </style>
 
 <template>
@@ -81,13 +93,15 @@
           <div slot="title">电脑目录</div>
           <div slot="content">
             程序从电脑的 C:\sf-mobile-web\player\system\movie 获取视频
+
           </div>
         </localize-card>
         <localize-card>
           <LocalizeIconfont slot="icon" icon="icon-Shapecopy" size="16px"></LocalizeIconfont>
           <div slot="title">上传本地视频</div>
           <div slot="content">
-            <div>存储至:C:\sf-mobile-web\player\user\movie</div>
+            <div class="item">存储至:C:\sf-mobile-web\player\user\movie</div>
+            <LocalizeUpload multiple class="item" accept="video/*"></LocalizeUpload>
           </div>
         </localize-card>
 
@@ -133,6 +147,7 @@
 <script>
 import LocalizeCard from '@/Localize-UI/Localize-card';
 import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
+import LocalizeUpload from '@/Localize-UI/Localize-upload';
 import AxiosHelper from '@/assets/lib/AxiosHelper.js';
 import axios from 'axios';
 export default {
@@ -201,6 +216,8 @@ export default {
   components: {
     LocalizeCard,
     LocalizeIconfont,
+
+    LocalizeUpload,
   },
   watch: {
     model() {
