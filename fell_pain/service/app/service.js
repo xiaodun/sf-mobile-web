@@ -27,15 +27,29 @@ var server = http_os.createServer (function (request, response) {
 
     //对播放器应用的额外处理
     let external = {};
-    if (dataName === 'player') {
-      let pathList = ['c://sf-mobile-web', '/player', '/system', '/movie'];
+    let pathList = ['c://sf-mobile-web', '/player', '/system', '/movie'];
+    let userPathList = ['c://sf-mobile-web', '/player', '/user', '/movie'];
+    if (appName === 'player' && dataName === 'player') {
       let path = pathList.join ('');
+      let userPath = userPathList.join ('');
       external.rootPath = path;
       if (command === 'get') {
         //创建目录
         let moveList = [];
         createFloder (pathList);
+        createFloder (userPathList);
         //读取文件夹下的视频
+        let userFiles = file_os.readdirSync (userPath);
+        userFiles.forEach (filename => {
+          let filedir = userPath + '/' + filename;
+          let stats = file_os.statSync (filedir);
+          if (stats.isFile ()) {
+            moveList.push ({
+              name: filename,
+            });
+          }
+        });
+
         let files = file_os.readdirSync (path);
 
         files.forEach (filename => {
@@ -51,16 +65,21 @@ var server = http_os.createServer (function (request, response) {
 
         external.moveList = moveList;
       } else {
+        //因为无法预知视频的名字  所以这里无法加入详细的判断
         //获取视频
         if (command.includes ('.')) {
           var filePath = path + '/' + decodeURIComponent (command);
-
+          if (!file_os.existsSync (filePath)) {
+            //去掉后缀
+            let fileName = decodeURIComponent (command);
+            let index = fileName.lastIndexOf ('.');
+            fileName = fileName.substring (0, index);
+            //到用户上传的文件夹下找
+            filePath = userPath + '/' + fileName;
+          }
+          console.log (filePath);
           file_os.stat (filePath, function (error, stats) {
             if (error) {
-              if (error.code === 'ENOENT') {
-                // 404 Error if file not found
-                return response.sendStatus (404);
-              }
               response.end (error);
             }
             var range = request.headers.range;
@@ -140,19 +159,26 @@ var server = http_os.createServer (function (request, response) {
     //解析参数
 
     if (request.method.toUpperCase () == 'POST') {
-      /**
-         * 文件上传
-         */
-
       if (
         ~(request.headers['content-type'] || '').indexOf ('multipart/form-data')
       ) {
+        /**
+         * 文件上传
+         */
         var postData = {
           files: [],
         };
         var form = new formidable_os.IncomingForm ();
         form.maxFileSize = 5 * 1024 * 1024 * 1024;
-        form.uploadDir = __dirname + '/' + rootFloder.path;
+        if (
+          appName === 'player' &&
+          dataName === 'player' &&
+          command === 'upload'
+        ) {
+          form.uploadDir = userPathList.join ('');
+        } else {
+          form.uploadDir = __dirname + '/' + rootFloder.path;
+        }
         form.parse (request, function (error, fileds, files) {
           if (error) {
             // 超过指定大小时的报错

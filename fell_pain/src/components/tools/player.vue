@@ -66,7 +66,6 @@
     background: black;
   }
 }
-
 </style>
 
 <template>
@@ -81,7 +80,7 @@
         <div class="list-wrapper">
           <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
           </div> -->
-          <mt-cell-swipe :title="item.name" :label="item.id === item.name ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
+          <mt-cell-swipe :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
           </mt-cell-swipe>
 
         </div>
@@ -101,7 +100,7 @@
           <div slot="title">上传本地视频</div>
           <div slot="content">
             <div class="item">存储至:C:\sf-mobile-web\player\user\movie</div>
-            <LocalizeUpload multiple class="item" accept="video/*"></LocalizeUpload>
+            <LocalizeUpload :uri="requestPlayerPrefix+'/upload'" multiple class="item" accept="video/*"></LocalizeUpload>
           </div>
         </localize-card>
 
@@ -150,6 +149,7 @@ import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
 import LocalizeUpload from '@/Localize-UI/Localize-upload';
 import AxiosHelper from '@/assets/lib/AxiosHelper.js';
 import axios from 'axios';
+import BuiltServiceConfig from '@root/service/app/config.json';
 export default {
   name: 'player_vue',
   data() {
@@ -173,29 +173,39 @@ export default {
         this.moveList = response.data;
       });
     },
-    request_player_test() {
-      AxiosHelper.request({
-        // headers: {
-        //   'Content-type': 'application/json',
-        // },
-        method: 'post',
-        url: this.requestPlayerPrefix + '/test',
-        data: 12,
-      }).then(response => {
-        this.moveList = response.data;
-      });
-    },
+    // request_player_test() {
+    //   AxiosHelper.request({
+    //     // headers: {
+    //     //   'Content-type': 'application/json',
+    //     // },
+    //     method: 'post',
+    //     url: this.requestPlayerPrefix + '/test',
+    //     data: 12,
+    //   }).then(response => {
+    //     this.moveList = response.data;
+    //   });
+    // },
     request_player_play(argMove) {
-      this.$refs.videoDom.src =
-        '/api' +
-        '/' +
-        this.requestPlayerPrefix +
-        '/' +
-        encodeURIComponent(argMove.name);
+      let index = argMove.name.lastIndexOf('.');
+      if (argMove.isUser) {
+        this.$refs.videoDom.src =
+          BuiltServiceConfig.prefix +
+          '/' +
+          this.requestPlayerPrefix +
+          '/' +
+          encodeURIComponent(argMove.flag) +
+          argMove.name.substring(index);
+      } else {
+        this.$refs.videoDom.src =
+          BuiltServiceConfig.prefix +
+          '/' +
+          this.requestPlayerPrefix +
+          '/' +
+          encodeURIComponent(argMove.name);
+      }
     },
     player(argMove) {
       this.active.id = argMove.id;
-      console.log(this.active.id, argMove.id);
       this.request_player_play(argMove);
     },
   },
@@ -211,7 +221,7 @@ export default {
     });
     this.request_player_get();
 
-    this.request_player_test();
+    // this.request_player_test();
   },
   components: {
     LocalizeCard,
