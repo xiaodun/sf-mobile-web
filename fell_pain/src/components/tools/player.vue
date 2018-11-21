@@ -80,7 +80,7 @@
         <div class="list-wrapper">
           <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
           </div> -->
-          <mt-cell-swipe :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
+          <mt-cell-swipe :left="[{content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser?[{content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
           </mt-cell-swipe>
 
         </div>
@@ -100,7 +100,7 @@
           <div slot="title">上传本地视频</div>
           <div slot="content">
             <div class="item">存储至:C:\sf-mobile-web\player\user\movie</div>
-            <LocalizeUpload :uri="requestPlayerPrefix+'/upload'" multiple class="item" accept="video/*"></LocalizeUpload>
+            <LocalizeUpload @success='upload_success' :uri="requestPlayerPrefix+'/upload'" multiple class="item" accept="video/*"></LocalizeUpload>
           </div>
         </localize-card>
 
@@ -144,31 +144,36 @@
   </div>
 </template>
 <script>
-import LocalizeCard from '@/Localize-UI/Localize-card';
-import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
-import LocalizeUpload from '@/Localize-UI/Localize-upload';
-import AxiosHelper from '@/assets/lib/AxiosHelper.js';
-import axios from 'axios';
-import BuiltServiceConfig from '@root/service/app/config.json';
+import LocalizeCard from "@/Localize-UI/Localize-card";
+import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
+import LocalizeUpload from "@/Localize-UI/Localize-upload";
+import AxiosHelper from "@/assets/lib/AxiosHelper.js";
+import axios from "axios";
+import BuiltServiceConfig from "@root/service/app/config.json";
 export default {
-  name: 'player_vue',
+  name: "player_vue",
   data() {
     return {
-      model: 'player-tab-id',
-      requestPlayerPrefix: '/player/player',
+      model: "player-tab-id",
+      requestPlayerPrefix: "/player/player",
       active: {
-        src: '',
-        id: '',
+        src: "",
+        id: ""
       },
-      moveList: [],
+      moveList: []
     };
   },
   methods: {
+    down_file() {},
+    upload_success() {
+      this.request_player_get();
+    },
+    request_down_file() {},
     request_player_get() {
       AxiosHelper.request({
-        method: 'post',
-        url: this.requestPlayerPrefix + '/get',
-        data: {},
+        method: "post",
+        url: this.requestPlayerPrefix + "/get",
+        data: {}
       }).then(response => {
         this.moveList = response.data;
       });
@@ -186,37 +191,37 @@ export default {
     //   });
     // },
     request_player_play(argMove) {
-      let index = argMove.name.lastIndexOf('.');
+      let index = argMove.name.lastIndexOf(".");
       if (argMove.isUser) {
         this.$refs.videoDom.src =
           BuiltServiceConfig.prefix +
-          '/' +
+          "/" +
           this.requestPlayerPrefix +
-          '/' +
+          "/" +
           encodeURIComponent(argMove.flag) +
           argMove.name.substring(index);
       } else {
         this.$refs.videoDom.src =
           BuiltServiceConfig.prefix +
-          '/' +
+          "/" +
           this.requestPlayerPrefix +
-          '/' +
+          "/" +
           encodeURIComponent(argMove.name);
       }
     },
     player(argMove) {
       this.active.id = argMove.id;
       this.request_player_play(argMove);
-    },
+    }
   },
   computed: {},
   mounted() {
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       let scrollTop = document.documentElement.scrollTop;
       if (scrollTop >= 10) {
-        this.$refs.parentDom.classList.add('type-1');
+        this.$refs.parentDom.classList.add("type-1");
       } else {
-        this.$refs.parentDom.classList.remove('type-1');
+        this.$refs.parentDom.classList.remove("type-1");
       }
     });
     this.request_player_get();
@@ -227,12 +232,12 @@ export default {
     LocalizeCard,
     LocalizeIconfont,
 
-    LocalizeUpload,
+    LocalizeUpload
   },
   watch: {
     model() {
       document.documentElement.scrollTop = 0;
-    },
-  },
+    }
+  }
 };
 </script>
