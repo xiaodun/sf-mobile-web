@@ -51,10 +51,6 @@
           border-bottom: none;
           background-color: #7ce7ff;
         }
-
-        .mint-cell-text {
-          // color: #fff;
-        }
       }
     }
   }
@@ -80,7 +76,7 @@
         <div class="list-wrapper">
           <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
           </div> -->
-          <mt-cell-swipe :left="[{content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser?[{content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
+          <mt-cell-swipe :left="[{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser?[{handler:()=>request_delete_file(item),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
           </mt-cell-swipe>
 
         </div>
@@ -144,6 +140,7 @@
   </div>
 </template>
 <script>
+import { Toast } from "mint-ui";
 import LocalizeCard from "@/Localize-UI/Localize-card";
 import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
 import LocalizeUpload from "@/Localize-UI/Localize-upload";
@@ -164,11 +161,44 @@ export default {
     };
   },
   methods: {
-    down_file() {},
+    request_delete_file(argItem) {
+      AxiosHelper.request({
+        method: "post",
+        url: this.requestPlayerPrefix + "/delete",
+        data: {
+          id: argItem.id
+        }
+      }).then(response => {
+        Toast("删除成功");
+        this.request_player_get();
+      });
+    },
     upload_success() {
       this.request_player_get();
     },
-    request_down_file() {},
+    request_download_file(argItem) {
+      //下载用户上传和系统文件
+      Toast("下载中...");
+      AxiosHelper.request({
+        method: "post",
+        url: this.requestPlayerPrefix + "/download",
+        data: {
+          id: argItem.isUser ? argItem.id : argItem.name,
+          isUser: argItem.isUser
+        },
+        responseType: "blob"
+      }).then(response => {
+        var blob = response.data;
+        var a = document.createElement("a");
+        a.download = argItem.name;
+        a.href = URL.createObjectURL(blob);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        Toast("已下载");
+        URL.revokeObjectURL(a.href);
+      });
+    },
     request_player_get() {
       AxiosHelper.request({
         method: "post",
@@ -178,18 +208,6 @@ export default {
         this.moveList = response.data;
       });
     },
-    // request_player_test() {
-    //   AxiosHelper.request({
-    //     // headers: {
-    //     //   'Content-type': 'application/json',
-    //     // },
-    //     method: 'post',
-    //     url: this.requestPlayerPrefix + '/test',
-    //     data: 12,
-    //   }).then(response => {
-    //     this.moveList = response.data;
-    //   });
-    // },
     request_player_play(argMove) {
       let index = argMove.name.lastIndexOf(".");
       if (argMove.isUser) {
@@ -225,8 +243,6 @@ export default {
       }
     });
     this.request_player_get();
-
-    // this.request_player_test();
   },
   components: {
     LocalizeCard,
