@@ -83,7 +83,7 @@
         <div class="list-wrapper" v-if="moveList.length>0">
           <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
           </div> -->
-          <mt-cell-swipe :left="[{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser?[{handler:()=>request_delete_file(item),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="Math.random()" v-for="(item) in moveList">
+          <mt-cell-swipe :left="[item.isTemp ? []:{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser || item.isTemp ?[{handler:()=>request_delete_file(item,index),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? item.isTemp ?'本地文件': '系统'  :'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="Math.random()" v-for="(item,index) in moveList">
           </mt-cell-swipe>
 
         </div>
@@ -114,7 +114,7 @@
           <LocalizeIconfont slot="icon" icon="icon-tianjiashipin-m" size="16px"></LocalizeIconfont>
           <div slot="title">添加本地视频到列表</div>
           <div slot="content">
-
+            <LocalizeNativefile multiple accept="video/*" @success="readerSuccess"></LocalizeNativefile>
           </div>
         </localize-card>
         <localize-card>
@@ -154,6 +154,7 @@ import {Toast} from 'mint-ui';
 import LocalizeCard from '@/Localize-UI/Localize-card';
 import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
 import LocalizeUpload from '@/Localize-UI/Localize-upload';
+import LocalizeNativefile from '@/Localize-UI/Localize-nativefile';
 import AxiosHelper from '@/assets/lib/AxiosHelper.js';
 import BuiltServiceConfig from '@root/service/app/config.json';
 export default {
@@ -170,23 +171,36 @@ export default {
     };
   },
   methods: {
-    request_delete_file(argItem) {
-      if (argItem.id === this.active.id) {
-        //会引发后台播放  做一些简单的限制
-        Toast('该视频已经播放!');
-        return;
-      }
-      AxiosHelper.request({
-        method: 'post',
-        url: this.requestPlayerPrefix + '/delete',
-        data: {
-          id: argItem.id,
-        },
-      }).then(response => {
-        Toast('删除成功');
-
-        this.request_player_get();
+    readerSuccess(argFile) {
+      console.log(argFile);
+      this.moveList.unshift({
+        name: argFile.name,
+        isTemp: true,
+        id: ((Math.random() * 100000) | 0) + argFile.name,
+        src: URL.createObjectURL(argFile),
       });
+    },
+    request_delete_file(argItem, index) {
+      if (argItem.isTemp) {
+        this.moveList.splice(index, 1);
+      } else {
+        if (argItem.id === this.active.id) {
+          //会引发后台报错  做一些简单的限制
+          Toast('该视频已经播放!');
+          return;
+        }
+        AxiosHelper.request({
+          method: 'post',
+          url: this.requestPlayerPrefix + '/delete',
+          data: {
+            id: argItem.id,
+          },
+        }).then(response => {
+          Toast('删除成功');
+
+          this.request_player_get();
+        });
+      }
     },
     upload_success() {
       this.request_player_get();
@@ -224,22 +238,26 @@ export default {
       });
     },
     request_player_play(argMove) {
-      let index = argMove.name.lastIndexOf('.');
-      if (argMove.isUser) {
-        this.$refs.videoDom.src =
-          BuiltServiceConfig.prefix +
-          '/' +
-          this.requestPlayerPrefix +
-          '/' +
-          encodeURIComponent(argMove.flag) +
-          argMove.name.substring(index);
+      if (argMove.isTemp) {
+        this.$refs.videoDom.src = argMove.src;
       } else {
-        this.$refs.videoDom.src =
-          BuiltServiceConfig.prefix +
-          '/' +
-          this.requestPlayerPrefix +
-          '/' +
-          encodeURIComponent(argMove.name);
+        let index = argMove.name.lastIndexOf('.');
+        if (argMove.isUser) {
+          this.$refs.videoDom.src =
+            BuiltServiceConfig.prefix +
+            '/' +
+            this.requestPlayerPrefix +
+            '/' +
+            encodeURIComponent(argMove.flag) +
+            argMove.name.substring(index);
+        } else {
+          this.$refs.videoDom.src =
+            BuiltServiceConfig.prefix +
+            '/' +
+            this.requestPlayerPrefix +
+            '/' +
+            encodeURIComponent(argMove.name);
+        }
       }
     },
     player(argMove) {
@@ -262,7 +280,7 @@ export default {
   components: {
     LocalizeCard,
     LocalizeIconfont,
-
+    LocalizeNativefile,
     LocalizeUpload,
   },
   watch: {
