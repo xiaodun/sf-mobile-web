@@ -1,6 +1,6 @@
 import axios from 'axios';
 import builtService from '@root/service/app/config.json';
-import {Toast} from 'Mint-ui';
+import { Toast } from 'mint-ui';
 var instance = axios.create({
   baseURL: '/' + builtService.prefix,
 });
@@ -8,7 +8,7 @@ var instance = axios.create({
 
 // })
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response;
   },
   (error, response) => {
