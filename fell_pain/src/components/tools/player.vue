@@ -10,6 +10,12 @@
 
     width: 100%;
     height: 100%;
+
+    .no-data {
+      margin-top: 20px;
+
+      text-align: center;
+    }
   }
 
   .mint-tabbar.is-fixed {
@@ -62,6 +68,7 @@
     background: black;
   }
 }
+
 </style>
 
 <template>
@@ -73,12 +80,15 @@
 
           <video ref="videoDom" id="video-id" controls :src="active.src"></video>
         </div>
-        <div class="list-wrapper">
+        <div class="list-wrapper" v-if="moveList.length>0">
           <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
           </div> -->
-          <mt-cell-swipe :left="[{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser?[{handler:()=>request_delete_file(item),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? '系统':'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="item.id" v-for="item in moveList">
+          <mt-cell-swipe :left="[item.isTemp ? []:{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]" :right="item.isUser || item.isTemp ?[{handler:()=>request_delete_file(item,index),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]" :title="item.name" :label="!item.isUser ? item.isTemp ?'本地文件': '系统'  :'用户'" @click.native="player(item)" :class="active.id === item.id ? 'active' : ''" class='move' :key="Math.random()" v-for="(item,index) in moveList">
           </mt-cell-swipe>
 
+        </div>
+        <div class="no-data" v-else>
+          暂无视频
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="config-tab-id">
@@ -104,7 +114,7 @@
           <LocalizeIconfont slot="icon" icon="icon-tianjiashipin-m" size="16px"></LocalizeIconfont>
           <div slot="title">添加本地视频到列表</div>
           <div slot="content">
-
+            <LocalizeNativefile multiple accept="video/*" @success="readerSuccess"></LocalizeNativefile>
           </div>
         </localize-card>
         <localize-card>
@@ -140,106 +150,129 @@
   </div>
 </template>
 <script>
-import { Toast } from "mint-ui";
-import LocalizeCard from "@/Localize-UI/Localize-card";
-import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
-import LocalizeUpload from "@/Localize-UI/Localize-upload";
-import AxiosHelper from "@/assets/lib/AxiosHelper.js";
-import axios from "axios";
-import BuiltServiceConfig from "@root/service/app/config.json";
+import {Toast} from 'mint-ui';
+import LocalizeCard from '@/Localize-UI/Localize-card';
+import LocalizeIconfont from '@/Localize-UI/Localize-iconfont';
+import LocalizeUpload from '@/Localize-UI/Localize-upload';
+import LocalizeNativefile from '@/Localize-UI/Localize-nativefile';
+import AxiosHelper from '@/assets/lib/AxiosHelper.js';
+import BuiltServiceConfig from '@root/service/app/config.json';
 export default {
-  name: "player_vue",
+  name: 'player_vue',
   data() {
     return {
-      model: "player-tab-id",
-      requestPlayerPrefix: "/player/player",
+      model: 'player-tab-id',
+      requestPlayerPrefix: '/player/player',
       active: {
-        src: "",
-        id: ""
+        src: '',
+        id: '',
       },
-      moveList: []
+      moveList: [],
     };
   },
   methods: {
-    request_delete_file(argItem) {
-      AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/delete",
-        data: {
-          id: argItem.id
-        }
-      }).then(response => {
-        Toast("删除成功");
-        this.request_player_get();
+    readerSuccess(argFile) {
+      console.log(argFile);
+      this.moveList.unshift({
+        name: argFile.name,
+        isTemp: true,
+        id: ((Math.random() * 100000) | 0) + argFile.name,
+        src: URL.createObjectURL(argFile),
       });
+    },
+    request_delete_file(argItem, index) {
+      if (argItem.isTemp) {
+        this.moveList.splice(index, 1);
+      } else {
+        if (argItem.id === this.active.id) {
+          //会引发后台报错  做一些简单的限制
+          Toast('该视频已经播放!');
+          return;
+        }
+        AxiosHelper.request({
+          method: 'post',
+          url: this.requestPlayerPrefix + '/delete',
+          data: {
+            id: argItem.id,
+          },
+        }).then(response => {
+          Toast('删除成功');
+
+          this.request_player_get();
+        });
+      }
     },
     upload_success() {
       this.request_player_get();
     },
     request_download_file(argItem) {
       //下载用户上传和系统文件
-      Toast("下载中...");
+      Toast('下载中...');
       AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/download",
+        method: 'post',
+        url: this.requestPlayerPrefix + '/download',
         data: {
           id: argItem.isUser ? argItem.id : argItem.name,
-          isUser: argItem.isUser
+          isUser: argItem.isUser,
         },
-        responseType: "blob"
+        responseType: 'blob',
       }).then(response => {
         var blob = response.data;
-        var a = document.createElement("a");
+        var a = document.createElement('a');
         a.download = argItem.name;
         a.href = URL.createObjectURL(blob);
         document.body.appendChild(a);
         a.click();
         a.remove();
-        Toast("已下载");
+        Toast('已下载');
         URL.revokeObjectURL(a.href);
       });
     },
     request_player_get() {
       AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/get",
-        data: {}
+        method: 'post',
+        url: this.requestPlayerPrefix + '/get',
+        data: {},
       }).then(response => {
         this.moveList = response.data;
       });
     },
     request_player_play(argMove) {
-      let index = argMove.name.lastIndexOf(".");
-      if (argMove.isUser) {
-        this.$refs.videoDom.src =
-          BuiltServiceConfig.prefix +
-          "/" +
-          this.requestPlayerPrefix +
-          "/" +
-          encodeURIComponent(argMove.flag) +
-          argMove.name.substring(index);
+      if (argMove.isTemp) {
+        this.$refs.videoDom.src = argMove.src;
       } else {
-        this.$refs.videoDom.src =
-          BuiltServiceConfig.prefix +
-          "/" +
-          this.requestPlayerPrefix +
-          "/" +
-          encodeURIComponent(argMove.name);
+        let index = argMove.name.lastIndexOf('.');
+        if (argMove.isUser) {
+          this.$refs.videoDom.src =
+            BuiltServiceConfig.prefix +
+            '/' +
+            this.requestPlayerPrefix +
+            '/' +
+            encodeURIComponent(argMove.flag) +
+            argMove.name.substring(index);
+        } else {
+          this.$refs.videoDom.src =
+            BuiltServiceConfig.prefix +
+            '/' +
+            this.requestPlayerPrefix +
+            '/' +
+            encodeURIComponent(argMove.name);
+        }
       }
     },
     player(argMove) {
       this.active.id = argMove.id;
       this.request_player_play(argMove);
-    }
+    },
   },
   computed: {},
   mounted() {
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       let scrollTop = document.documentElement.scrollTop;
       if (scrollTop >= 10) {
-        this.$refs.parentDom.classList.add("type-1");
+        this.$refs.parentDom.classList.add('type-1');
       } else {
-        this.$refs.parentDom.classList.remove("type-1");
+        this.$refs.parentDom.classList.remove('type-1');
       }
     });
     this.request_player_get();
@@ -247,13 +280,13 @@ export default {
   components: {
     LocalizeCard,
     LocalizeIconfont,
-
-    LocalizeUpload
+    LocalizeNativefile,
+    LocalizeUpload,
   },
   watch: {
     model() {
       document.documentElement.scrollTop = 0;
-    }
-  }
+    },
+  },
 };
 </script>

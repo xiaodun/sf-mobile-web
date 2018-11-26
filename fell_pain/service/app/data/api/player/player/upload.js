@@ -1,12 +1,11 @@
-(function () {
-  return function (argData, argParams) {
+(function() {
+  return function(argData, argParams) {
     //argData 数据的副本
-    console.log (argData, argParams);
     argData = argData || [];
-    argParams.files.forEach ((el, index, arr) => {
+    argParams.files.forEach((el, index, arr) => {
       el.isUser = true;
       el.id = el.flag;
-      argData.push (el);
+      argData.push(el);
     });
     return {
       isWrite: true, //是否覆盖数据
@@ -18,4 +17,4 @@
       },
     };
   };
-}) ();
+})();

@@ -30,7 +30,7 @@
 </style>
 <template>
   <div class='Localize-upload' ref='uploadDom'>
-    <button class='upload-btn' @click="upload">文件上传</button>
+    <button class='upload-btn' @click="upload">读取本地文件</button>
     <LocalizeProgress v-for="(item,index) in progressList" :key="index" class="progress-item" :value="item.value"></LocalizeProgress>
   </div>
 </template>
@@ -55,59 +55,23 @@ export default {
 
     this.$refs.uploadDom.appendChild(this.inputDom);
     this.inputDom.onchange = event => {
-      let formData = new FormData();
+      Toast('已添加到列表');
       for (let i = 0; i < event.target.files.length; i++) {
         let el = event.target.files[i];
-        formData.append('files', el);
+
+        this.$emit('success', el);
       }
       event.target.value = '';
-      this.progressList.push({
-        formData: formData,
-        value: 0,
-      });
-      this.request_upload_file(formData);
     };
   },
   methods: {
     upload() {
       this.inputDom.click();
     },
-    request_upload_file(argFormdata) {
-      AxiosHelper.request({
-        method: 'post',
-        url: this.uri,
-        data: argFormdata,
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
-        onUploadProgress: progressEvent => {
-          var complete =
-            ((progressEvent.loaded / progressEvent.total) * 100) | 0;
-
-          let index = this.progressList.findIndex((el, index, arr) => {
-            return el.formData == argFormdata;
-          });
-          this.progressList[index].value = complete;
-          if (complete == 100) {
-            Toast('上传成功');
-            this.progressList.splice(index, 1);
-            this.$emit('success');
-          }
-        },
-      }).then(response => {});
-    },
   },
   props: {
-    uri: {
-      type: String,
-      require: true,
-    },
     accept: {
       type: String,
-    },
-    inputId: {
-      type: String,
-      require: true,
     },
     multiple: {
       // type: Boolean,
