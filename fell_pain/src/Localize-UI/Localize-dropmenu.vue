@@ -1,11 +1,12 @@
 <style lang="less">
-@import "./Localize-UI.less";
+@import './Localize-UI.less';
 
 .Localize-dropmenu-vue {
   position: relative;
 
   .header {
     cursor: pointer;
+
     .iconfont {
       height: @header-height;
     }
@@ -18,12 +19,14 @@
     right: 0;
 
     width: 170px;
-    height: 40px;
 
     background-color: #444;
 
     .item {
       cursor: pointer;
+
+      border-bottom: 1px solid #afafaf;
+
       .iconfont {
         margin-right: 10px;
         margin-left: 15px;
@@ -31,6 +34,7 @@
     }
   }
 }
+
 </style>
 <template>
   <div class='Localize-dropmenu-vue'>

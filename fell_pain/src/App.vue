@@ -40,7 +40,7 @@ body {
     transition: .25s ease-in-out;
     transform: scale(0);
 
-    background-color: rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, .5);
 
     img {
       position: absolute;
@@ -48,8 +48,6 @@ body {
       left: 50%;
 
       transform: translate(-50%, -50%);
-
-      box-shadow: 3px 2px 2px 1px rgba(255, 255, 255);
     }
 
     &.active {
@@ -78,7 +76,7 @@ body {
 
         <LocalizeDropmenu
           slot="right"
-          :menu-item="[{icon:'icon-weibiaoti--',content:'二维码分享'}]"
+          :menu-item="[{icon:'icon-weibiaoti--',content:'二维码分享'},{icon:'icon-bug',content:isDebug?'关闭调试':'打开调试'}]"
           @tap-item="tapItem"
         ></LocalizeDropmenu>
       </LocalizeHeader>
@@ -99,6 +97,7 @@ body {
 </template>
 
 <script>
+import Vconsole from "vconsole";
 import QRCode from "qrcodejs2";
 import Player from "@/components/tools/player.vue";
 import LocalizePagecontainer from "@/Localize-UI/Localize-pagecontainer.vue";
@@ -108,7 +107,9 @@ import LocalizeDropmenu from "@/Localize-UI/Localize-dropmenu.vue";
 export default {
   name: "App",
   data() {
-    return {};
+    return {
+      isDebug: false
+    };
   },
   components: {
     QRCode,
@@ -123,6 +124,18 @@ export default {
         //点击了二维码
         this.createQecode();
         this.$refs.qrcode.classList.add("active");
+      } else if (argIndex === 1) {
+        let vconsoleDom = document.getElementById("__vconsole");
+        this.isDebug = !this.isDebug;
+        if (this.isDebug) {
+          if (vconsoleDom === null) {
+            new Vconsole();
+          } else {
+            vconsoleDom.style.display = "block";
+          }
+        } else {
+          vconsoleDom.style.display = "none";
+        }
       }
     },
     close_qrcode() {
