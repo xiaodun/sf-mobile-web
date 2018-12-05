@@ -2,12 +2,20 @@
 .Localize-iconfont {
   display: block;
 }
+
 </style>
 <template>
 
-    <svg class="icon Localize-iconfont" :size='initialSize' :width='width' :height="height" aria-hidden="true">
-        <use :xlink:href="'#'+icon"></use>
-    </svg>
+  <svg
+    class="icon Localize-iconfont"
+    color="red"
+    :size='initialSize'
+    :width='width'
+    :height="height"
+    aria-hidden="true"
+  >
+    <use :xlink:href="'#'+icon"></use>
+  </svg>
 
 </template>
 <script>
