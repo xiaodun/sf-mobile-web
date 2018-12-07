@@ -29,7 +29,10 @@
       </LocalizePage>
 
     </div>
-    <LocalizeFooter :list="footerList"></LocalizeFooter>
+    <LocalizeFooter
+      :selectd-index="selectedIndex"
+      :list="footerList"
+    ></LocalizeFooter>
   </div>
 </template>
 <script>

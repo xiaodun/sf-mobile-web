@@ -1,13 +1,14 @@
 <style lang="less">
-@import "./Localize-UI.less";
+@import './Localize-UI.less';
 
 .Localize-footer-vue {
-  display: flex;
   font-size: 0;
   line-height: 40px;
 
   position: fixed;
   bottom: 0;
+
+  display: flex;
 
   width: 100%;
   height: 40px;
@@ -18,8 +19,8 @@
   background-image: linear-gradient(#fffefe, #dcdada);
   background-clip: padding-box;
   box-shadow: -1px 0 2px 1px #ddd;
-  > .item {
-    flex-grow: 1;
+
+   > .item {
     font-size: 12px;
     font-weight: 600;
 
@@ -32,22 +33,27 @@
     user-select: none;
 
     text-shadow: 0 1px 0 #d8cdcd;
+
+    flex-grow: 1;
+
     &.selected {
       color: #f3f3f3;
       background-image: linear-gradient(#636262, #292828);
       text-shadow: 1px 1px 0 #252525;
     }
+
     span {
       vertical-align: middle;
     }
   }
 }
+
 </style>
 <template>
   <div class='Localize-footer-vue'>
     <div
       class="item"
-      :class="selectIndex === index && 'selected'"
+      :class="selectdIndex === index && 'selected'"
       v-for="(item ,index) in list"
       :key="index"
     >
@@ -70,7 +76,7 @@ export default {
       type: Array,
       required: true
     },
-    selectIndex: {
+    selectdIndex: {
       default: 0
     }
   }

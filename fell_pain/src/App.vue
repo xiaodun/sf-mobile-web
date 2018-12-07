@@ -7,8 +7,8 @@
 html,
 body,
 #app {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 
   width: 100%;
   height: 100%;
@@ -23,7 +23,7 @@ body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -37,10 +37,10 @@ body {
     width: 100%;
     height: 100%;
 
-    transition: .25s ease-in-out;
+    transition: 0.25s ease-in-out;
     transform: scale(0);
 
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
 
     img {
       position: absolute;
@@ -55,20 +55,24 @@ body {
     }
   }
 }
-
 </style>
 <template>
   <div id="app">
     <vue-touch
       tag="div"
-      @doubletap="close_qrcode"
+      @doubletap="closeQrcode"
     >
       <div
         id="qrcode-id"
         ref="qrcode"
       ></div>
     </vue-touch>
-    <LocalizePagecontainer :footer-list="['应用列表','我']">
+
+    <LocalizePagecontainer
+      :select-index="selectdIndex"
+      :footer-list="['应用列表','我']"
+    >
+
       <LocalizeHeader
         slot="header"
         title="7号楼"
@@ -80,8 +84,12 @@ body {
           @tap-item="tapItem"
         ></LocalizeDropmenu>
       </LocalizeHeader>
-
       <div slot="page-0">
+        <input
+          type="text"
+          ref="input"
+        >
+        mixins mixins mixins mixins mixins mixinxs
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, eaque.
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad, doloribus necessitatibus velit dolorum nihil, quasi eligendi recusandae placeat eaque iusto ipsam aperiam aliquid consequatur repudiandae architecto aspernatur aut magni error libero possimus quaerat vitae quisquam esse alias. Minima exercitationem laboriosam ratione magnam consequuntur velit similique. Quia, voluptatibus sunt tempore, in corrupti recusandae nulla laboriosam at voluptas quod labore! In modi ipsa quam aliquam aperiam deleniti amet adipisci voluptatem accusamus ipsum. Natus, nobis cum reprehenderit voluptatem ipsa explicabo veritatis dolorum molestias officia doloremque delectus laudantium quibusdam provident est corrupti tenetur iusto consectetur ipsum sed minus accusantium. Sed sint repellat recusandae quaerat.
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae ad tempore, nihil itaque sint quae deleniti consequatur nam, rerum optio voluptas aut sapiente sed voluptatum ut quisquam eius! Quis, totam rem! Pariatur, officiis. Labore debitis commodi nobis natus neque nihil. Aperiam, vitae perferendis! Molestiae placeat tempora mollitia provident animi itaque similique deserunt aliquam nulla porro. Nisi molestias veritatis quos facere iure necessitatibus harum, alias suscipit asperiores totam adipisci numquam mollitia reprehenderit temporibus beatae tempore quo, dolore ab, repellendus blanditiis atque perspiciatis cum quibusdam at. Harum asperiores at neque recusandae eius vero, iste nemo, praesentium architecto nam non iure nesciunt amet.
@@ -93,7 +101,6 @@ body {
       </div>
     </LocalizePagecontainer>
   </div>
-
 </template>
 
 <script>
@@ -103,7 +110,6 @@ import Player from "@/components/tools/player.vue";
 import LocalizePagecontainer from "@/Localize-UI/Localize-pagecontainer.vue";
 import LocalizeHeader from "@/Localize-UI/Localize-header.vue";
 import LocalizeDropmenu from "@/Localize-UI/Localize-dropmenu.vue";
-
 export default {
   name: "App",
   data() {
@@ -111,6 +117,7 @@ export default {
       isDebug: false
     };
   },
+
   components: {
     QRCode,
     Player,
@@ -119,10 +126,13 @@ export default {
     LocalizeDropmenu
   },
   methods: {
+    change_components() {
+      console.log(this);
+    },
     tapItem(argItem, argIndex) {
       if (argIndex === 0) {
         //点击了二维码
-        this.createQecode();
+        this.createQrcode();
         this.$refs.qrcode.classList.add("active");
       } else if (argIndex === 1) {
         let vconsoleDom = document.getElementById("__vconsole");
@@ -138,10 +148,10 @@ export default {
         }
       }
     },
-    close_qrcode() {
+    closeQrcode() {
       this.$refs.qrcode.classList.remove("active");
     },
-    createQecode() {
+    createQrcode() {
       this.$refs.qrcode.innerHTML = "";
       if (
         window.location.hostname == "localhost" ||
@@ -157,8 +167,11 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    console.dir(this.$refs.input);
+  }
 };
 </script>
+
 
 

@@ -9,18 +9,18 @@ import vueTouch from 'vue-touch';
 import {Loadmore} from 'mint-ui';
 import MintUI from 'mint-ui';
 import {Button} from 'mint-ui';
-Vue.config.productionTip = false;
 
-Vue.use(MintUI);
-vueTouch.registerCustomEvent('doubletap', {
+Vue.config.productionTip = false;
+Vue.use (MintUI);
+vueTouch.registerCustomEvent ('doubletap', {
   type: 'tap',
   taps: 2,
 });
-Vue.use(vueTouch, {name: 'vue-touch'});
-Vue.component(Button.name, Button);
-Vue.component(Loadmore.name, Loadmore);
+Vue.use (vueTouch, {name: 'vue-touch'});
+Vue.component (Button.name, Button);
+Vue.component (Loadmore.name, Loadmore);
 /* eslint-disable no-new */
-new Vue({
+new Vue ({
   el: '#app',
   router,
   components: {App},
