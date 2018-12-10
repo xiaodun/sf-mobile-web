@@ -82,6 +82,7 @@ export default {
   methods: {
     in_app(argItem) {
       this.$router.push(argItem.to);
+      this.$store.commit("setTitle", argItem.name);
     },
     change_page(argPage) {
       this.selectedIndex = argPage;

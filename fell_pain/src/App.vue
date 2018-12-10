@@ -7,8 +7,8 @@
 html,
 body,
 #app {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 
   width: 100%;
   height: 100%;
@@ -23,7 +23,7 @@ body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -38,10 +38,10 @@ body {
   width: 100%;
   height: 100%;
 
-  transition: .25s ease-in-out;
+  transition: 0.25s ease-in-out;
   transform: scale(0);
 
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
 
   img {
     position: absolute;
@@ -57,7 +57,6 @@ body {
     transform: scale(1);
   }
 }
-
 </style>
 <template>
   <div id="app">
@@ -72,7 +71,7 @@ body {
     </vue-touch>
     <LocalizeHeader
       slot="header"
-      title="7号楼"
+      :title="$store.state.title"
     >
       <vue-touch
         v-if="$router.history.current.path != '/'"

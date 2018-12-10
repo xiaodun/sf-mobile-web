@@ -9,7 +9,7 @@ import vueTouch from 'vue-touch';
 import {Loadmore} from 'mint-ui';
 import MintUI from 'mint-ui';
 import {Button} from 'mint-ui';
-
+import store from '@/vuex/store.js';
 Vue.config.productionTip = false;
 Vue.use (MintUI);
 vueTouch.registerCustomEvent ('doubletap', {
@@ -23,6 +23,7 @@ Vue.component (Loadmore.name, Loadmore);
 new Vue ({
   el: '#app',
   router,
+  store,
   components: {App},
   template: '<App/>',
 });
