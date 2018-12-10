@@ -22,7 +22,8 @@
   <vue-touch
     class='Localize-page-vue'
     tag="div"
-    @pan="swipe"
+    @pan="pan"
+    @panend="pan_end"
     :options="{touchAction:'pan-y',direction:['left','right']  }"
   >
 
@@ -37,9 +38,11 @@ export default {
     return {};
   },
   methods: {
-    swipe(event) {
-      console.log(event);
-      this.$emit("swipe", event);
+    pan(event) {
+      this.$emit("pan", event);
+    },
+    pan_end(event) {
+      this.$emit("panend", event);
     }
   },
   computed: {},

@@ -1,5 +1,5 @@
 <style lang="less">
-@import './Localize-UI.less';
+@import "./Localize-UI.less";
 
 .Localize-footer-vue {
   font-size: 0;
@@ -20,7 +20,7 @@
   background-clip: padding-box;
   box-shadow: -1px 0 2px 1px #ddd;
 
-   > .item {
+  > .item {
     font-size: 12px;
     font-weight: 600;
 
@@ -31,6 +31,7 @@
 
     cursor: pointer;
     user-select: none;
+    transition: all 0.25s;
 
     text-shadow: 0 1px 0 #d8cdcd;
 
@@ -47,19 +48,20 @@
     }
   }
 }
-
 </style>
 <template>
   <div class='Localize-footer-vue'>
-    <div
+    <vue-touch
+      tag="div"
       class="item"
-      :class="selectdIndex === index && 'selected'"
+      :class="selectedIndex === index && 'selected'"
       v-for="(item ,index) in list"
       :key="index"
+      @tap="tap($event,index)"
     >
-
       <span> {{ item}}</span>
-    </div>
+    </vue-touch>
+
   </div>
 </template>
 <script>
@@ -68,7 +70,13 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    tap(event, argIndex) {
+      if (this.selectedIndex !== argIndex) {
+        this.$emit("tap", event, argIndex);
+      }
+    }
+  },
   computed: {},
   mounted() {},
   props: {
@@ -76,7 +84,7 @@ export default {
       type: Array,
       required: true
     },
-    selectdIndex: {
+    selectedIndex: {
       default: 0
     }
   }
