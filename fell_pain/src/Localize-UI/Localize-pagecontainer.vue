@@ -6,6 +6,7 @@
 
   height: 100%;
 }
+
 </style>
 <template>
   <div class='Localize-pagecontainer-vue'>
@@ -82,6 +83,7 @@ export default {
     },
     pageTap(event, argIndex) {
       this.$refs.pageWrapper.style.marginLeft = -argIndex * 100 + "%";
+
       this.$emit("change-page", argIndex);
     }
   },
