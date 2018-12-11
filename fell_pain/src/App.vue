@@ -112,6 +112,7 @@ export default {
   methods: {
     back() {
       this.$router.push("/");
+      this.$store.commit("setTitle", "7号楼");
     },
     tapItem(argItem, argIndex) {
       if (argIndex === 0) {
