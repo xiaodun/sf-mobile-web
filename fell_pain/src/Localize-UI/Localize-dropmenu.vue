@@ -92,17 +92,17 @@ export default {
       let obj = JSON.parse(JSON.stringify(argItem));
       this.$emit("tap-item", obj, argIndex);
       this.isShowMenu = false;
+    },
+    hide_menu() {
+      this.isShowMenu = false;
     }
   },
   computed: {},
   mounted() {
-    document.addEventListener(
-      "touchstart",
-      () => {
-        this.isShowMenu = false;
-      },
-      true
-    );
+    document.addEventListener("touchstart", this.hide_menu, true);
+  },
+  beforeDestroy() {
+    document.removeEventListener("touchstart", this.hide_menu);
   },
   props: {
     iconType: {
