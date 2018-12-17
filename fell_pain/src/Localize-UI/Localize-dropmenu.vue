@@ -37,9 +37,12 @@
 
 </style>
 <template>
-  <div class='Localize-dropmenu-vue'>
+  <div
+    ref='dropmenu'
+    class='Localize-dropmenu-vue'
+  >
     <div
-      @touchstart="toggle_menu()"
+      @touchstart="toggle_menu($event)"
       class="header"
     >
 
@@ -54,7 +57,7 @@
       <slot name="menu">
 
         <div
-          @touchstart="tap_menu_item(item,index)"
+          @touchstart="tap_menu_item(item,index,$event)"
           class="item"
           :key="index"
           v-for="(item,index) in menuItem"
@@ -75,6 +78,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import LocalizeIconfont from "./Localize-iconfont.vue";
 export default {
@@ -93,8 +97,17 @@ export default {
       this.$emit("tap-item", obj, argIndex);
       this.isShowMenu = false;
     },
-    hide_menu() {
-      this.isShowMenu = false;
+    hide_menu(event) {
+      console.log(this.$refs.dropmenu);
+      let target = event.target;
+      if (
+        target === this.$refs.dropmenu ||
+        (this.$refs.dropmenu.compareDocumentPosition(target) & 16) === 16
+      ) {
+        //
+      } else {
+        this.isShowMenu = false;
+      }
     }
   },
   computed: {},

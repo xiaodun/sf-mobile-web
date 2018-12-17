@@ -6,6 +6,7 @@
 
   height: 100%;
 }
+
 </style>
 <template>
   <div class='Localize-pagecontainer-vue'>
@@ -64,7 +65,6 @@ export default {
         ) {
           //
         } else {
-          console.log(event.deltaX);
           this.$refs.pageWrapper.style.marginLeft =
             -this.selectedIndex * widthWindow + event.deltaX + "px";
           if (Math.abs(event.deltaX) > threshold) {
