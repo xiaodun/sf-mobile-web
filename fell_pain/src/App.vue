@@ -1,4 +1,6 @@
 <style lang="less">
+@import '~@/Localize-UI/Localize-UI.less';
+
 * {
   margin: 0;
   padding: 0;
@@ -7,11 +9,15 @@
 html,
 body,
 #app {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 
   width: 100%;
   height: 100%;
+}
+
+.placehoder-top {
+  padding-top: @header-height;
 }
 
 body {
@@ -23,7 +29,7 @@ body {
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -38,10 +44,10 @@ body {
   width: 100%;
   height: 100%;
 
-  transition: 0.25s ease-in-out;
+  transition: .25s ease-in-out;
   transform: scale(0);
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, .5);
 
   img {
     position: absolute;
@@ -55,6 +61,7 @@ body {
     transform: scale(1);
   }
 }
+
 </style>
 <template>
   <div id="app">
@@ -83,6 +90,7 @@ body {
         @tap-item="tapItem"
       ></LocalizeDropmenu>
     </LocalizeHeader>
+    <div class="placehoder-top"></div>
     <router-view>
 
     </router-view>

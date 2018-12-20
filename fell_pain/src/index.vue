@@ -2,28 +2,36 @@
 #index-vue-id {
   width: 100%;
   height: 100%;
+
   .app-preview {
-    padding: 0.5em;
     width: 85%;
     min-height: 200px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1), 0 0 3px 1px rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
     margin: 1em auto 1.5em auto;
+    padding: .5em;
+
+    border-radius: 20px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .3);
+
     img {
-      pointer-events: none;
-      max-width: 100%;
       min-width: 100%;
+      max-width: 100%;
+
+      pointer-events: none;
+
       border-radius: inherit;
     }
+
     .name {
-      margin-top: 0.1em;
-      margin-bottom: 0.1em;
+      margin-top: .1em;
+      margin-bottom: .1em;
     }
+
     .describe {
       color: #333;
     }
   }
 }
+
 </style>
 <template>
   <div id='index-vue-id'>
@@ -65,12 +73,18 @@ export default {
     return {
       appList: [
         {
-          name: "手脑通",
           to: {
             name: "player"
           },
           src: "/static/pc-mobile-connect.png",
           describe: "建立手机和电脑的视频传输通道。"
+        },
+        {
+          to: {
+            name: "compass"
+          },
+          src: "/static/compass-logo.jpg",
+          describe: "给迷路的你一个方向"
         }
       ],
       selectedIndex: 0
@@ -82,7 +96,6 @@ export default {
   methods: {
     in_app(argItem) {
       this.$router.push(argItem.to);
-      this.$store.commit("setTitle", argItem.name);
     },
     change_page(argPage) {
       this.selectedIndex = argPage;

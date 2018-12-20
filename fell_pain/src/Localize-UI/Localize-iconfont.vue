@@ -49,7 +49,6 @@ export default {
         } else {
           //传入单个值
           this.width = this.size;
-          console.log(this.size);
           this.height = this.size;
         }
       }

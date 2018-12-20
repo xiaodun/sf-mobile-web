@@ -12,7 +12,7 @@
   width: 100%;
   height: 100%;
   padding: 0 1em;
-  padding-top: @header-height + 5;
+  padding-top: 5px;
   padding-bottom: @bottom-height + 5;
 }
 

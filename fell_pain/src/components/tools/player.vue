@@ -4,7 +4,6 @@
   width: 100%;
   height: 100%;
   padding: 0 10px;
-  padding-top: 35px;
 
   .player-tab {
     overflow-y: auto;
@@ -69,6 +68,7 @@
     background: black;
   }
 }
+
 </style>
 
 <template>

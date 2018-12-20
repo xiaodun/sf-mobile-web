@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 Vue.use (Vuex);
 const store = new Vuex.Store ({
   state: {
-    title: '7号楼',
+    title: '',
   },
   mutations: {
     setTitle (state, title) {

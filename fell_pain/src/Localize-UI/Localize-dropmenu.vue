@@ -98,7 +98,6 @@ export default {
       this.isShowMenu = false;
     },
     hide_menu(event) {
-      console.log(this.$refs.dropmenu);
       let target = event.target;
       if (
         target === this.$refs.dropmenu ||

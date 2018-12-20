@@ -14,7 +14,7 @@
     <slot name="header"></slot>
     <div
       ref="pageWrapper"
-      :style="{width:footerList.length * 100+'%'}"
+      :style="{width:footerList.length * 100+'%',height:'100%'}"
     >
 
       <LocalizePage
