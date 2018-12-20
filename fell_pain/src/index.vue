@@ -1,7 +1,9 @@
 <style lang="less">
+@import '~@/Localize-UI/Localize-UI.less';
+
 #index-vue-id {
   width: 100%;
-  height: 100%;
+  height: ~"calc(100% - @{header-height})";
 
   .app-preview {
     width: 85%;
@@ -85,6 +87,13 @@ export default {
           },
           src: "/static/compass-logo.jpg",
           describe: "给迷路的你一个方向"
+        },
+        {
+          to: {
+            name: "compass"
+          },
+          src: "/static/compass-logo.jpg",
+          describe: "给迷路的你一个方向"
         }
       ],
       selectedIndex: 0
@@ -102,6 +111,8 @@ export default {
     }
   },
   computed: {},
-  mounted() {}
+  mounted() {
+    console.log(this);
+  }
 };
 </script>

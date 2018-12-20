@@ -20,7 +20,6 @@ export default {
   methods: {
     deviceorientation(event) {
       this.alpha = event.alpha + "";
-      console.log(event.alpha);
     }
   },
   computed: {},

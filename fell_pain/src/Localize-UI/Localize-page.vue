@@ -1,5 +1,5 @@
 <style lang="less">
-@import 'Localize-UI.less';
+@import '~@/Localize-UI/Localize-UI.less';
 
 .Localize-page-vue {
   position: absolute;
