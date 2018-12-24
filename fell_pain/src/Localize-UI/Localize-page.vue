@@ -1,5 +1,5 @@
 <style lang="less">
-@import '~@/Localize-UI/Localize-UI.less';
+@import "~@/Localize-UI/Localize-UI.less";
 
 .Localize-page-vue {
   position: absolute;
@@ -15,16 +15,16 @@
   padding-top: 5px;
   padding-bottom: @bottom-height + 5;
 }
-
 </style>
 <template>
 
   <vue-touch
     class='Localize-page-vue'
     tag="div"
+    @panstart="on_pan_start"
     @pan="pan"
     @panend="pan_end"
-    :options="{touchAction:'pan-y',direction:['left','right']  }"
+    :options="{touchAction:'pan-y' }"
   >
 
     <slot></slot>
@@ -38,6 +38,9 @@ export default {
     return {};
   },
   methods: {
+    on_pan_start(event) {
+      this.$emit("panstart", event);
+    },
     pan(event) {
       this.$emit("pan", event);
     },

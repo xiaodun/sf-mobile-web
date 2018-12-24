@@ -5,20 +5,24 @@
   overflow: hidden;
 
   height: 100%;
+  .page-wrapper {
+    transition: 0.25s ease-in;
+  }
 }
-
 </style>
 <template>
   <div class='Localize-pagecontainer-vue'>
 
     <slot name="header"></slot>
     <div
+      class="page-wrapper"
       ref="pageWrapper"
       :style="{width:footerList.length * 100+'%'}"
     >
 
       <LocalizePage
         :index="index"
+        @panstart="panStart"
         @pan="pagePan"
         @panend="pagePanEnd"
         :key="index"
@@ -41,13 +45,21 @@
 import LocalizeFooter from "@/Localize-UI/Localize-footer.vue";
 import LocalizePage from "@/Localize-UI/Localize-page.vue";
 const threshold = 100;
+const minNumber = 3;
+// 最小的触发次数   在Chrome 70.0.3538.110 中快速滑动倒面底部会造成页面的切换
 export default {
   name: "Localize-pagecontainer_vue",
   data() {
-    return {};
+    return {
+      number: 0
+    };
   },
   methods: {
+    panStart() {
+      this.number = 0;
+    },
     pagePanEnd(event) {
+      this.number = 0;
       if (Math.abs(event.deltaX) <= threshold) {
         this.$refs.pageWrapper.style.marginLeft =
           -this.selectedIndex * 100 + "%";
@@ -56,9 +68,13 @@ export default {
     pagePan(event, argIndex) {
       let direction = event.direction;
       let widthWindow = window.innerWidth;
-
       if (direction === 2 || direction === 4) {
         //左右滑动
+        this.number++;
+        if (this.number < minNumber) {
+          return;
+        }
+        console.log(this.number);
         if (
           (this.selectedIndex === 0 && direction === 4) ||
           (this.selectedIndex === this.footerList.length - 1 && direction === 2)
@@ -67,6 +83,8 @@ export default {
         } else {
           this.$refs.pageWrapper.style.marginLeft =
             -this.selectedIndex * widthWindow + event.deltaX + "px";
+          //大于阀值切换页面
+
           if (Math.abs(event.deltaX) > threshold) {
             this.$refs.pageWrapper.style.marginLeft =
               direction === 2
