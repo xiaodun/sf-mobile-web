@@ -74,7 +74,6 @@ export default {
         if (this.number < minNumber) {
           return;
         }
-        console.log(this.number);
         if (
           (this.selectedIndex === 0 && direction === 4) ||
           (this.selectedIndex === this.footerList.length - 1 && direction === 2)
