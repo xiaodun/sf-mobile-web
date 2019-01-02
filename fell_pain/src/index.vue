@@ -67,8 +67,6 @@
   </div>
 </template>
 <script>
-import LocalizePagecontainer from "@/Localize-UI/Localize-pagecontainer.vue";
-
 export default {
   name: "index_vue",
   data() {
@@ -99,9 +97,6 @@ export default {
       selectedIndex: 0
     };
   },
-  components: {
-    LocalizePagecontainer
-  },
   methods: {
     in_app(argItem) {
       this.$router.push(argItem.to);
@@ -111,8 +106,6 @@ export default {
     }
   },
   computed: {},
-  mounted() {
-    console.log(this);
-  }
+  mounted() {}
 };
 </script>

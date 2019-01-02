@@ -29,57 +29,63 @@
 
 </style>
 <template>
-  <div class='Localize-upload' ref='uploadDom'>
-    <button class='upload-btn' @click="upload">读取本地文件</button>
-    <LocalizeProgress v-for="(item,index) in progressList" :key="index" class="progress-item" :value="item.value"></LocalizeProgress>
+  <div
+    class='Localize-upload'
+    ref='uploadDom'
+  >
+    <button
+      class='upload-btn'
+      @click="upload"
+    >读取本地文件</button>
+    <LocalizeProgress
+      v-for="(item,index) in progressList"
+      :key="index"
+      class="progress-item"
+      :value="item.value"
+    ></LocalizeProgress>
   </div>
 </template>
 <script>
-import {Toast} from 'mint-ui';
-import AxiosHelper from '@/assets/lib/AxiosHelper';
-import LocalizeProgress from '@/Localize-UI/Localize-progress';
+import { Toast } from "mint-ui";
 export default {
-  name: 'Localize-upload_vue',
+  name: "Localize-upload_vue",
   data() {
     return {
       process: 0,
-      progressList: [],
+      progressList: []
     };
   },
   computed: {},
   mounted() {
     this.inputDom = document.createElement(`input`);
     this.inputDom.accept = this.accept;
-    this.inputDom.type = 'file';
+    this.inputDom.type = "file";
     this.inputDom.multiple = this.multiple !== false && true;
 
     this.$refs.uploadDom.appendChild(this.inputDom);
     this.inputDom.onchange = event => {
-      Toast('已添加到列表');
+      Toast("已添加到列表");
       for (let i = 0; i < event.target.files.length; i++) {
         let el = event.target.files[i];
 
-        this.$emit('success', el);
+        this.$emit("success", el);
       }
-      event.target.value = '';
+      event.target.value = "";
     };
   },
   methods: {
     upload() {
       this.inputDom.click();
-    },
+    }
   },
   props: {
     accept: {
-      type: String,
+      type: String
     },
     multiple: {
       // type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    LocalizeProgress,
-  },
+      default: false
+    }
+  }
 };
 </script>

@@ -5,10 +5,12 @@
   overflow: hidden;
 
   height: 100%;
+
   .page-wrapper {
-    transition: 0.25s ease-in;
+    transition: .25s ease-in;
   }
 }
+
 </style>
 <template>
   <div class='Localize-pagecontainer-vue'>
@@ -42,8 +44,6 @@
   </div>
 </template>
 <script>
-import LocalizeFooter from "@/Localize-UI/Localize-footer.vue";
-import LocalizePage from "@/Localize-UI/Localize-page.vue";
 const threshold = 100;
 const minNumber = 3;
 // 最小的触发次数   在Chrome 70.0.3538.110 中快速滑动倒面底部会造成页面的切换
@@ -104,10 +104,7 @@ export default {
     }
   },
   computed: {},
-  components: {
-    LocalizeFooter,
-    LocalizePage
-  },
+
   mounted() {},
   props: {
     footerList: {

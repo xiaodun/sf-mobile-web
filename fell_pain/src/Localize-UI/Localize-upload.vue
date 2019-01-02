@@ -29,28 +29,38 @@
 
 </style>
 <template>
-  <div class='Localize-upload' ref='uploadDom'>
-    <button class='upload-btn' @click="upload">文件上传</button>
-    <LocalizeProgress v-for="(item,index) in progressList" :key="index" class="progress-item" :value="item.value"></LocalizeProgress>
+  <div
+    class='Localize-upload'
+    ref='uploadDom'
+  >
+    <button
+      class='upload-btn'
+      @click="upload"
+    >文件上传</button>
+    <LocalizeProgress
+      v-for="(item,index) in progressList"
+      :key="index"
+      class="progress-item"
+      :value="item.value"
+    ></LocalizeProgress>
   </div>
 </template>
 <script>
-import {Toast} from 'mint-ui';
-import AxiosHelper from '@/assets/lib/AxiosHelper';
-import LocalizeProgress from '@/Localize-UI/Localize-progress';
+import { Toast } from "mint-ui";
+import AxiosHelper from "@/assets/lib/AxiosHelper";
 export default {
-  name: 'Localize-upload_vue',
+  name: "Localize-upload_vue",
   data() {
     return {
       process: 0,
-      progressList: [],
+      progressList: []
     };
   },
   computed: {},
   mounted() {
     this.inputDom = document.createElement(`input`);
     this.inputDom.accept = this.accept;
-    this.inputDom.type = 'file';
+    this.inputDom.type = "file";
     this.inputDom.multiple = this.multiple !== false && true;
 
     this.$refs.uploadDom.appendChild(this.inputDom);
@@ -58,12 +68,12 @@ export default {
       let formData = new FormData();
       for (let i = 0; i < event.target.files.length; i++) {
         let el = event.target.files[i];
-        formData.append('files', el);
+        formData.append("files", el);
       }
-      event.target.value = '';
+      event.target.value = "";
       this.progressList.push({
         formData: formData,
-        value: 0,
+        value: 0
       });
       this.request_upload_file(formData);
     };
@@ -74,11 +84,11 @@ export default {
     },
     request_upload_file(argFormdata) {
       AxiosHelper.request({
-        method: 'post',
+        method: "post",
         url: this.uri,
         data: argFormdata,
         headers: {
-          'Content-type': 'multipart/form-data',
+          "Content-type": "multipart/form-data"
         },
         onUploadProgress: progressEvent => {
           var complete =
@@ -89,33 +99,30 @@ export default {
           });
           this.progressList[index].value = complete;
           if (complete == 100) {
-            Toast('上传成功');
+            Toast("上传成功");
             this.progressList.splice(index, 1);
-            this.$emit('success');
+            this.$emit("success");
           }
-        },
+        }
       }).then(response => {});
-    },
+    }
   },
   props: {
     uri: {
       type: String,
-      require: true,
+      require: true
     },
     accept: {
-      type: String,
+      type: String
     },
     inputId: {
       type: String,
-      require: true,
+      require: true
     },
     multiple: {
       // type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    LocalizeProgress,
-  },
+      default: false
+    }
+  }
 };
 </script>

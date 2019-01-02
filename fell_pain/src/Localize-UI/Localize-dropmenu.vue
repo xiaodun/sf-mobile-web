@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import LocalizeIconfont from "./Localize-iconfont.vue";
 export default {
   name: "Localize-dropmenu_vue",
   data() {
@@ -123,9 +122,6 @@ export default {
     menuItem: {
       type: Array
     }
-  },
-  components: {
-    LocalizeIconfont
   }
 };
 </script>

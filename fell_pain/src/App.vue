@@ -98,8 +98,6 @@ body {
 </template>
 
 <script>
-import LocalizeHeader from "@/Localize-UI/Localize-header.vue";
-import LocalizeDropmenu from "@/Localize-UI/Localize-dropmenu.vue";
 import Vconsole from "vconsole";
 import QRCode from "qrcodejs2";
 export default {
@@ -111,9 +109,7 @@ export default {
   },
 
   components: {
-    QRCode,
-    LocalizeHeader,
-    LocalizeDropmenu
+    QRCode
   },
   methods: {
     back() {
