@@ -39,13 +39,13 @@ export default {
   },
   methods: {
     on_pan_start(event) {
-      this.$emit("panstart", event);
+      this.$parent.panStart(event);
     },
     pan(event) {
-      this.$emit("pan", event);
+      this.$parent.pagePan(event);
     },
     pan_end(event) {
-      this.$emit("panend", event);
+      this.$parent.pagePanEnd(event);
     }
   },
   computed: {},

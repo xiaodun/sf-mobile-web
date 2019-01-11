@@ -1,5 +1,5 @@
 <style lang="less">
-@import '~@/Localize-UI/Localize-UI.less';
+@import "~@/Localize-UI/Localize-UI.less";
 
 #index-vue-id {
   width: 100%;
@@ -9,10 +9,10 @@
     width: 85%;
     min-height: 200px;
     margin: 1em auto 1.5em auto;
-    padding: .5em;
+    padding: 0.5em;
 
     border-radius: 20px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1), 0 0 3px 1px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1), 0 0 3px 1px rgba(0, 0, 0, 0.3);
 
     img {
       min-width: 100%;
@@ -24,8 +24,8 @@
     }
 
     .name {
-      margin-top: .1em;
-      margin-bottom: .1em;
+      margin-top: 0.1em;
+      margin-bottom: 0.1em;
     }
 
     .describe {
@@ -33,7 +33,6 @@
     }
   }
 }
-
 </style>
 <template>
   <div id='index-vue-id'>
@@ -44,7 +43,7 @@
       :footer-list="['应用列表','我']"
     >
 
-      <div slot="page-0">
+      <LocalizePage>
         <vue-touch
           class="app-preview"
           @tap="in_app(item)"
@@ -58,11 +57,11 @@
           <h3 class="name">{{item.name}}</h3>
           <div class="describe">{{item.describe}}</div>
         </vue-touch>
-      </div>
+      </LocalizePage>
 
-      <div slot="page-1">
+      <LocalizePage>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, similique.
-      </div>
+      </LocalizePage>
     </LocalizePagecontainer>
   </div>
 </template>

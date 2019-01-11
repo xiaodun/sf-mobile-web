@@ -7,10 +7,9 @@
   height: 100%;
 
   .page-wrapper {
-    transition: .25s ease-in;
+    transition: 0.25s ease-in;
   }
 }
-
 </style>
 <template>
   <div class='Localize-pagecontainer-vue'>
@@ -22,18 +21,7 @@
       :style="{width:footerList.length * 100+'%'}"
     >
 
-      <LocalizePage
-        :index="index"
-        @panstart="panStart"
-        @pan="pagePan"
-        @panend="pagePanEnd"
-        :key="index"
-        :style="{marginLeft:index*100+'%'}"
-        v-for="(item,index) in footerList"
-      >
-
-        <slot :name="'page-'+index"></slot>
-      </LocalizePage>
+      <slot></slot>
 
     </div>
     <LocalizeFooter
@@ -105,7 +93,16 @@ export default {
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    //初始化每个页面   暂不考虑动态添加页面的情况
+    let pageList = this.$slots.default.filter((Vnode, index, arr) => {
+      return Vnode.tag !== undefined;
+    });
+    pageList.forEach((Vnode, index, arr) => {
+      Vnode.index = index;
+      Vnode.elm.style.marginLeft = index * 100 + "%";
+    });
+  },
   props: {
     footerList: {
       required: true,

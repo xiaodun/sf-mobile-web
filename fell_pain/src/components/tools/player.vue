@@ -228,7 +228,6 @@ export default {
   },
   methods: {
     readerSuccess(argFile) {
-      console.log(argFile);
       this.moveList.unshift({
         name: argFile.name,
         isTemp: true,
