@@ -343,7 +343,8 @@ server.listen(config.port, function() {
   console.log("service is running");
 });
 server.on("error", function(error) {
-  if (error.toString().indexOf(`listen EADDRINUSE :::${config.port}`) !== -1) {
+  console.log(error);
+  if (error.toString().indexOf(`listen EADDRINUSE`) !== -1) {
     console.log(`${config.port}端口被占用,可能是当前应用,也可能是其他应用`);
   }
 });
