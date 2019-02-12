@@ -68,7 +68,6 @@
     background: black;
   }
 }
-
 </style>
 
 <template>
@@ -85,6 +84,7 @@
         <div class="video-wrapper">
 
           <video
+            autoplay
             ref="videoDom"
             id="video-id"
             controls
