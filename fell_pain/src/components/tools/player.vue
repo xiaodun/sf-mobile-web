@@ -111,6 +111,7 @@
               multiple
               class="item"
               accept="video/*"
+              capture="microphone"
             ></LocalizeUpload>
           </div>
         </localize-card>

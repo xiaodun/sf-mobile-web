@@ -26,17 +26,10 @@
     margin-bottom: 10px;
   }
 }
-
 </style>
 <template>
-  <div
-    class='Localize-upload'
-    ref='uploadDom'
-  >
-    <button
-      class='upload-btn'
-      @click="upload"
-    >文件上传</button>
+  <div class="Localize-upload" ref="uploadDom">
+    <button class="upload-btn" @click="upload">文件上传</button>
     <LocalizeProgress
       v-for="(item,index) in progressList"
       :key="index"
@@ -47,7 +40,6 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import AxiosHelper from "@/assets/lib/AxiosHelper";
 export default {
   name: "Localize-upload_vue",
   data() {
@@ -61,8 +53,11 @@ export default {
     this.inputDom = document.createElement(`input`);
     this.inputDom.accept = this.accept;
     this.inputDom.type = "file";
-    this.inputDom.multiple = this.multiple !== false && true;
+    if (Boolean(this.capture)) {
+      this.inputDom.capture = this.capture;
+    }
 
+    this.inputDom.multiple = this.multiple !== false && true;
     this.$refs.uploadDom.appendChild(this.inputDom);
     this.inputDom.onchange = event => {
       let formData = new FormData();
@@ -83,28 +78,30 @@ export default {
       this.inputDom.click();
     },
     request_upload_file(argFormdata) {
-      AxiosHelper.request({
-        method: "post",
-        url: this.uri,
-        data: argFormdata,
-        headers: {
-          "Content-type": "multipart/form-data"
-        },
-        onUploadProgress: progressEvent => {
-          var complete =
-            ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+      this.$axios
+        .request({
+          method: "post",
+          url: this.uri,
+          data: argFormdata,
+          headers: {
+            "Content-type": "multipart/form-data"
+          },
+          onUploadProgress: progressEvent => {
+            var complete =
+              ((progressEvent.loaded / progressEvent.total) * 100) | 0;
 
-          let index = this.progressList.findIndex((el, index, arr) => {
-            return el.formData == argFormdata;
-          });
-          this.progressList[index].value = complete;
-          if (complete == 100) {
-            Toast("上传成功");
-            this.progressList.splice(index, 1);
-            this.$emit("success");
+            let index = this.progressList.findIndex((el, index, arr) => {
+              return el.formData == argFormdata;
+            });
+            this.progressList[index].value = complete;
+            if (complete == 100) {
+              Toast("上传成功");
+              this.progressList.splice(index, 1);
+              this.$emit("success");
+            }
           }
-        }
-      }).then(response => {});
+        })
+        .then(response => {});
     }
   },
   props: {
@@ -119,6 +116,7 @@ export default {
       type: String,
       require: true
     },
+    capture: String,
     multiple: {
       // type: Boolean,
       default: false
