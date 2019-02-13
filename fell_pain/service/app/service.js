@@ -61,11 +61,13 @@ var server = http_os.createServer(function(request, response) {
         let userFiles = file_os.readdirSync(userPath);
         userFiles.forEach(filename => {
           let filedir = userPath + "/" + filename;
-          let stats = file_os.statSync(filedir);
-          if (stats.isFile()) {
-            moveList.push({
-              name: filename
-            });
+          if (file_os.existsSync(filedir)) {
+            let stats = file_os.statSync(filedir);
+            if (stats.isFile()) {
+              moveList.push({
+                name: filename
+              });
+            }
           }
         });
 
