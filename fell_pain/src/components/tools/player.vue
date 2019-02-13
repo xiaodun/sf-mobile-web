@@ -71,32 +71,13 @@
 </style>
 
 <template>
-  <div
-    id='player-vue-id'
-    ref="parentDom"
-  >
+  <div id="player-vue-id" ref="parentDom">
     <mt-tab-container v-model="model">
-      <mt-tab-container-item
-        class='player-tab'
-        id="player-tab-id"
-      >
-
+      <mt-tab-container-item class="player-tab" id="player-tab-id">
         <div class="video-wrapper">
-
-          <video
-            autoplay
-            ref="videoDom"
-            id="video-id"
-            controls
-            :src="active.src"
-          ></video>
+          <video autoplay ref="videoDom" id="video-id" controls :src="active.src"></video>
         </div>
-        <div
-          class="list-wrapper"
-          v-if="moveList.length>0"
-        >
-          <!-- <div @click="player(item)" class="move" :key="item.id" v-for="item in moveList">
-          </div> -->
+        <div class="list-wrapper" v-if="moveList && moveList.length>0">
           <mt-cell-swipe
             :left="[item.isTemp ? []:{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]"
             :right="item.isUser || item.isTemp ?[{handler:()=>request_delete_file(item,index),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]"
@@ -104,45 +85,28 @@
             :label="!item.isUser ? item.isTemp ?'本地文件': '系统'  :'用户'"
             @click.native="player(item)"
             :class="active.id === item.id ? 'active' : ''"
-            class='move'
+            class="move"
             :key="Math.random()"
-            v-for="(item,index) in moveList"
+            v-for="(item,index) in  moveList"
           >
+            <!-- 解决添加数据后 显示错乱的问题   :key="Math.random()"   -->
           </mt-cell-swipe>
-
         </div>
-        <div
-          class="no-data"
-          v-else
-        >
-          暂无视频
-        </div>
+        <div class="no-data" v-if="moveList && moveList.length === 0">暂无视频</div>
       </mt-tab-container-item>
       <mt-tab-container-item id="config-tab-id">
-
         <localize-card>
-          <LocalizeIconfont
-            slot="icon"
-            icon="icon-cunchu1"
-            size="16px"
-          ></LocalizeIconfont>
+          <LocalizeIconfont slot="icon" icon="icon-cunchu1" size="16px"></LocalizeIconfont>
           <div slot="title">电脑目录</div>
-          <div slot="content">
-            程序从电脑的 C:\sf-mobile-web\player\system\movie 获取视频
-
-          </div>
+          <div slot="content">程序从电脑的 C:\sf-mobile-web\player\system\movie 获取视频</div>
         </localize-card>
         <localize-card>
-          <LocalizeIconfont
-            slot="icon"
-            icon="icon-Shapecopy"
-            size="16px"
-          ></LocalizeIconfont>
+          <LocalizeIconfont slot="icon" icon="icon-Shapecopy" size="16px"></LocalizeIconfont>
           <div slot="title">上传本地视频</div>
           <div slot="content">
             <div class="item">存储至:C:\sf-mobile-web\player\user\movie</div>
             <LocalizeUpload
-              @success='upload_success'
+              @success="upload_success"
               :uri="requestPlayerPrefix+'/upload'"
               multiple
               class="item"
@@ -152,66 +116,31 @@
         </localize-card>
 
         <localize-card>
-          <LocalizeIconfont
-            slot="icon"
-            icon="icon-tianjiashipin-m"
-            size="16px"
-          ></LocalizeIconfont>
+          <LocalizeIconfont slot="icon" icon="icon-tianjiashipin-m" size="16px"></LocalizeIconfont>
           <div slot="title">添加本地视频到列表</div>
           <div slot="content">
-            <LocalizeNativefile
-              multiple
-              accept="video/*"
-              @success="readerSuccess"
-            ></LocalizeNativefile>
+            <LocalizeNativefile multiple accept="video/*" @success="readerSuccess"></LocalizeNativefile>
           </div>
         </localize-card>
         <localize-card>
-          <LocalizeIconfont
-            slot="icon"
-            icon="icon-guanyuruanjian"
-            size="16px"
-          ></LocalizeIconfont>
+          <LocalizeIconfont slot="icon" icon="icon-guanyuruanjian" size="16px"></LocalizeIconfont>
           <div slot="title">关于程序</div>
           <div slot="content">
-            <p>
-
-              为了减缓手机内存的压力,自定义的本地视频播放体验,应个人需求而制作。
-            </p>
-            <p>
-
-              碍于浏览器支持的音频格式有限,无法播放视频实属正常!
-            </p>
-
+            <p>为了减缓手机内存的压力,自定义的本地视频播放体验,应个人需求而制作。</p>
+            <p>碍于浏览器支持的音频格式有限,无法播放视频实属正常!</p>
           </div>
         </localize-card>
-
       </mt-tab-container-item>
-
     </mt-tab-container>
 
-    <mt-tabbar
-      fixed
-      v-model="model"
-    >
-      <mt-tab-item id="player-tab-id">
-
-        播放器
-      </mt-tab-item>
-      <mt-tab-item id="config-tab-id">
-        配置
-      </mt-tab-item>
+    <mt-tabbar fixed v-model="model">
+      <mt-tab-item id="player-tab-id">播放器</mt-tab-item>
+      <mt-tab-item id="config-tab-id">配置</mt-tab-item>
     </mt-tabbar>
-
   </div>
 </template>
 <script>
 import { Toast } from "mint-ui";
-import LocalizeCard from "@/Localize-UI/Localize-card";
-import LocalizeIconfont from "@/Localize-UI/Localize-iconfont";
-import LocalizeUpload from "@/Localize-UI/Localize-upload";
-import LocalizeNativefile from "@/Localize-UI/Localize-nativefile";
-import AxiosHelper from "@/assets/lib/AxiosHelper.js";
 import BuiltServiceConfig from "@root/service/app/config.json";
 export default {
   name: "player_vue",
@@ -223,7 +152,7 @@ export default {
         src: "",
         id: ""
       },
-      moveList: []
+      moveList: null
     };
   },
   methods: {
@@ -240,21 +169,23 @@ export default {
         this.moveList.splice(index, 1);
       } else {
         if (argItem.id === this.active.id) {
-          //会引发后台报错  做一些简单的限制
+          //会引发后台报错  做一些简单的限制 这里只能限制当前客户端 对于多端无效
           Toast("该视频已经播放!");
           return;
         }
-        AxiosHelper.request({
-          method: "post",
-          url: this.requestPlayerPrefix + "/delete",
-          data: {
-            id: argItem.id
-          }
-        }).then(response => {
-          Toast("删除成功");
+        this.$axios
+          .request({
+            method: "post",
+            url: this.requestPlayerPrefix + "/delete",
+            data: {
+              id: argItem.id
+            }
+          })
+          .then(response => {
+            Toast("删除成功");
 
-          this.request_player_get();
-        });
+            this.request_player_get();
+          });
       }
     },
     upload_success() {
@@ -263,34 +194,38 @@ export default {
     request_download_file(argItem) {
       //下载用户上传和系统文件
       Toast("下载中...");
-      AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/download",
-        data: {
-          id: argItem.isUser ? argItem.id : argItem.name,
-          isUser: argItem.isUser
-        },
-        responseType: "blob"
-      }).then(response => {
-        var blob = response.data;
-        var a = document.createElement("a");
-        a.download = argItem.name;
-        a.href = URL.createObjectURL(blob);
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        Toast("已下载");
-        URL.revokeObjectURL(a.href);
-      });
+      this.$axios
+        .request({
+          method: "post",
+          url: this.requestPlayerPrefix + "/download",
+          data: {
+            id: argItem.isUser ? argItem.id : argItem.name,
+            isUser: argItem.isUser
+          },
+          responseType: "blob"
+        })
+        .then(response => {
+          var blob = response.data;
+          var a = document.createElement("a");
+          a.download = argItem.name;
+          a.href = URL.createObjectURL(blob);
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          Toast("已下载");
+          URL.revokeObjectURL(a.href);
+        });
     },
     request_player_get() {
-      AxiosHelper.request({
-        method: "post",
-        url: this.requestPlayerPrefix + "/get",
-        data: {}
-      }).then(response => {
-        this.moveList = response.data;
-      });
+      this.$axios
+        .request({
+          method: "post",
+          url: this.requestPlayerPrefix + "/get",
+          data: {}
+        })
+        .then(response => {
+          this.moveList = response.data;
+        });
     },
     request_player_play(argMove) {
       if (argMove.isTemp) {
@@ -331,12 +266,6 @@ export default {
       }
     });
     this.request_player_get();
-  },
-  components: {
-    LocalizeCard,
-    LocalizeIconfont,
-    LocalizeNativefile,
-    LocalizeUpload
   },
   watch: {
     model() {
