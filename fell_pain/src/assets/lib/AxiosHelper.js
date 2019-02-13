@@ -17,6 +17,7 @@ instance.interceptors.response.use(
       //没有开启内置服务器
       Toast("请开启内置的服务器");
     } else {
+      Toast("发生错误");
       console.error(error);
     }
   }

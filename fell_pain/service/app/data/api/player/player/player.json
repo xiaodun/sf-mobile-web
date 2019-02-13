@@ -44,29 +44,8 @@
     {
         "name": "563837383.mp4",
         "type": "video/mp4",
-        "flag": "upload_0dc73da7f0a38a44ff7ff24be2abb098",
+        "flag": "upload_33bf38e7c4cdda80066af1ad4bace7c5",
         "isUser": true,
-        "id": "upload_0dc73da7f0a38a44ff7ff24be2abb098"
-    },
-    {
-        "name": "563837383 - 副本.mp4",
-        "type": "video/mp4",
-        "flag": "upload_d3bd2c2c0b509935a5f22c6e386412bb",
-        "isUser": true,
-        "id": "upload_d3bd2c2c0b509935a5f22c6e386412bb"
-    },
-    {
-        "name": "563837383.mp4",
-        "type": "video/mp4",
-        "flag": "upload_d3bcf85b91955b35b7252f71db22c0f7",
-        "isUser": true,
-        "id": "upload_d3bcf85b91955b35b7252f71db22c0f7"
-    },
-    {
-        "name": "563837383.mp4",
-        "type": "video/mp4",
-        "flag": "upload_c79674c54c88ef62ae467adf5c324f43",
-        "isUser": true,
-        "id": "upload_c79674c54c88ef62ae467adf5c324f43"
+        "id": "upload_33bf38e7c4cdda80066af1ad4bace7c5"
     }
 ]
