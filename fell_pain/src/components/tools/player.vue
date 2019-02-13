@@ -168,11 +168,6 @@ export default {
       if (argItem.isTemp) {
         this.moveList.splice(index, 1);
       } else {
-        // if (argItem.id === this.active.id) {
-        //   //会引发后台报错  做一些简单的限制 这里只能限制当前客户端 对于多端无效
-        //   Toast("该视频已经播放!");
-        //   return;
-        // }
         this.$axios
           .request({
             method: "post",
@@ -224,6 +219,7 @@ export default {
           data: {}
         })
         .then(response => {
+          this.$refs.videoDom.src = undefined;
           this.moveList = response.data;
         });
     },

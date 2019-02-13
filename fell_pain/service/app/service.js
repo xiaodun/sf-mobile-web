@@ -62,6 +62,7 @@ var server = http_os.createServer(function(request, response) {
         userFiles.forEach(filename => {
           let filedir = userPath + "/" + filename;
           if (file_os.existsSync(filedir)) {
+            //防止读取到删除的文件导致报错
             let stats = file_os.statSync(filedir);
             if (stats.isFile()) {
               moveList.push({
