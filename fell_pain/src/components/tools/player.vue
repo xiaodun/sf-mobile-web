@@ -1,20 +1,12 @@
 <style lang="less">
 #player-vue-id {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
+  box-sizing: border-box;width: 100%;height: 100%;padding: 0 10px;
 
   .player-tab {
-    overflow-y: auto;
-
-    width: 100%;
-    height: 100%;
+    overflow-y: auto;width: 100%;height: 100%;
 
     .no-data {
-      margin-top: 55px;
-
-      text-align: center;
+      margin-top: 55px;text-align: center;
     }
   }
 
@@ -24,15 +16,7 @@
 
   &.type-1 {
     .video-wrapper {
-      position: fixed;
-      z-index: 90;
-      top: 35px;
-      right: 10px;
-      left: 10px;
-
-      display: block;
-
-      height: 150px;
+      position: fixed;z-index: 90;top: 35px;right: 10px;left: 10px;display: block;height: 150px;
     }
 
     .list-wrapper {
@@ -41,43 +25,51 @@
   }
 
   .video-wrapper {
-    height: 250px;
-    padding-top: 10px;
-
-    background-color: #fff;
+    height: 250px;padding-top: 10px;background-color: #fff;
   }
 
   .list-wrapper {
-    margin-top: 15px;
-    margin-bottom: 40px;
+    margin-top: 15px;margin-bottom: 40px;
 
     .move {
       &.active {
         .mint-cell-wrapper {
-          border-bottom: none;
-          background-color: #7ce7ff;
+          border-bottom: none;background-color: #7ce7ff;
         }
       }
     }
   }
 
   #video-id {
-    width: 100%;
-    height: 100%;
-
-    background: black;
+    width: 100%;height: 100%;background: black;
   }
 }
+
 </style>
 
 <template>
-  <div id="player-vue-id" ref="parentDom">
+  <div
+    id="player-vue-id"
+    ref="parentDom"
+  >
     <mt-tab-container v-model="model">
-      <mt-tab-container-item class="player-tab" id="player-tab-id">
+      <mt-tab-container-item
+        class="player-tab"
+        id="player-tab-id"
+      >
         <div class="video-wrapper">
-          <video autoplay ref="videoDom" id="video-id" controls :src="active.src"></video>
+          <video
+            autoplay
+            ref="videoDom"
+            id="video-id"
+            controls
+            :src="active.src"
+          ></video>
         </div>
-        <div class="list-wrapper" v-if="moveList && moveList.length>0">
+        <div
+          class="list-wrapper"
+          v-if="moveList && moveList.length>0"
+        >
           <mt-cell-swipe
             :left="[item.isTemp ? []:{handler:()=>request_download_file(item),content:'下载',style:{backgroundColor:'#74fd3d',color:'#fff',handle:()=>down_file(item)}}]"
             :right="item.isUser || item.isTemp ?[{handler:()=>request_delete_file(item,index),content:'删除',style:{background:'#fd593d',color:'#fff'}}]:[]"
@@ -92,16 +84,27 @@
             <!-- 解决添加数据后 显示错乱的问题   :key="Math.random()"   -->
           </mt-cell-swipe>
         </div>
-        <div class="no-data" v-if="moveList && moveList.length === 0">暂无视频</div>
+        <div
+          class="no-data"
+          v-if="moveList && moveList.length === 0"
+        >暂无视频</div>
       </mt-tab-container-item>
       <mt-tab-container-item id="config-tab-id">
         <localize-card>
-          <LocalizeIconfont slot="icon" icon="icon-cunchu1" size="16px"></LocalizeIconfont>
+          <LocalizeIconfont
+            slot="icon"
+            icon="icon-cunchu1"
+            size="16px"
+          ></LocalizeIconfont>
           <div slot="title">电脑目录</div>
           <div slot="content">程序从电脑的 C:\sf-mobile-web\player\system\movie 获取视频</div>
         </localize-card>
         <localize-card>
-          <LocalizeIconfont slot="icon" icon="icon-Shapecopy" size="16px"></LocalizeIconfont>
+          <LocalizeIconfont
+            slot="icon"
+            icon="icon-Shapecopy"
+            size="16px"
+          ></LocalizeIconfont>
           <div slot="title">上传本地视频</div>
           <div slot="content">
             <div class="item">存储至:C:\sf-mobile-web\player\user\movie</div>
@@ -111,20 +114,31 @@
               multiple
               class="item"
               accept="video/*"
-              capture="microphone"
             ></LocalizeUpload>
           </div>
         </localize-card>
 
         <localize-card>
-          <LocalizeIconfont slot="icon" icon="icon-tianjiashipin-m" size="16px"></LocalizeIconfont>
+          <LocalizeIconfont
+            slot="icon"
+            icon="icon-tianjiashipin-m"
+            size="16px"
+          ></LocalizeIconfont>
           <div slot="title">添加本地视频到列表</div>
           <div slot="content">
-            <LocalizeNativefile multiple accept="video/*" @success="readerSuccess"></LocalizeNativefile>
+            <LocalizeNativefile
+              multiple
+              accept="video/*"
+              @success="readerSuccess"
+            ></LocalizeNativefile>
           </div>
         </localize-card>
         <localize-card>
-          <LocalizeIconfont slot="icon" icon="icon-guanyuruanjian" size="16px"></LocalizeIconfont>
+          <LocalizeIconfont
+            slot="icon"
+            icon="icon-guanyuruanjian"
+            size="16px"
+          ></LocalizeIconfont>
           <div slot="title">关于程序</div>
           <div slot="content">
             <p>为了减缓手机内存的压力,自定义的本地视频播放体验,应个人需求而制作。</p>
@@ -134,7 +148,10 @@
       </mt-tab-container-item>
     </mt-tab-container>
 
-    <mt-tabbar fixed v-model="model">
+    <mt-tabbar
+      fixed
+      v-model="model"
+    >
       <mt-tab-item id="player-tab-id">播放器</mt-tab-item>
       <mt-tab-item id="config-tab-id">配置</mt-tab-item>
     </mt-tabbar>
