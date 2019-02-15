@@ -15,8 +15,9 @@
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1), 0 0 3px 1px rgba(0, 0, 0, 0.3);
 
     img {
-      min-width: 100%;
-      max-width: 100%;
+      width: 100%;
+      display: none;
+      transition: height 0.45s ease-in-out;
 
       pointer-events: none;
 
@@ -35,14 +36,12 @@
 }
 </style>
 <template>
-  <div id='index-vue-id'>
-
+  <div id="index-vue-id">
     <LocalizePagecontainer
       @change-page="change_page"
       :selected-index="selectedIndex"
       :footer-list="['应用列表','我']"
     >
-
       <LocalizePage>
         <vue-touch
           class="app-preview"
@@ -50,18 +49,13 @@
           v-for="(item,index) in appList"
           :key="index"
         >
-          <img
-            :src="item.src"
-            alt=""
-          >
+          <img :src="item.src" v-imgloaded alt>
           <h3 class="name">{{item.name}}</h3>
           <div class="describe">{{item.describe}}</div>
         </vue-touch>
       </LocalizePage>
 
-      <LocalizePage>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, similique.
-      </LocalizePage>
+      <LocalizePage>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, similique.</LocalizePage>
     </LocalizePagecontainer>
   </div>
 </template>
@@ -84,17 +78,37 @@ export default {
           },
           src: "/static/compass-logo.jpg",
           describe: "给迷路的你一个方向"
-        },
-        {
-          to: {
-            name: "compass"
-          },
-          src: "/static/compass-logo.jpg",
-          describe: "给迷路的你一个方向"
         }
       ],
       selectedIndex: 0
     };
+  },
+  directives: {
+    imgloaded(el) {
+      addEventListener(
+        "load",
+        () => {
+          el.style.display = "block";
+          let { height } = el.getBoundingClientRect();
+          el.style.height = 0;
+          requestAnimationFrame(() => {
+            el.style.height = height + "px";
+          });
+        },
+        {
+          once: true
+        }
+      );
+      el.addEventListener(
+        "transitionend",
+        () => {
+          el.style.height = "";
+        },
+        {
+          once: true
+        }
+      );
+    }
   },
   methods: {
     in_app(argItem) {

@@ -21,6 +21,13 @@ for (let key in network) {
     }
   }
 }
+function simpleResponseError(response, error) {
+  console.log(error);
+  response.writeHead(500, {
+    "Content-Type": "application/json"
+  });
+  response.end(error.stack);
+}
 var server = http_os.createServer(function(request, response) {
   //解析url
   try {
@@ -54,11 +61,14 @@ var server = http_os.createServer(function(request, response) {
         let userFiles = file_os.readdirSync(userPath);
         userFiles.forEach(filename => {
           let filedir = userPath + "/" + filename;
-          let stats = file_os.statSync(filedir);
-          if (stats.isFile()) {
-            moveList.push({
-              name: filename
-            });
+          if (file_os.existsSync(filedir)) {
+            //防止读取到删除的文件导致报错
+            let stats = file_os.statSync(filedir);
+            if (stats.isFile()) {
+              moveList.push({
+                name: filename
+              });
+            }
           }
         });
 
@@ -236,9 +246,10 @@ var server = http_os.createServer(function(request, response) {
           }
         });
       } catch (error) {
-        response.end(error.stack);
+        simpleResponseError(response, error);
       }
     }
+
     function executeCommand(params) {
       try {
         //执行命令
@@ -329,13 +340,11 @@ var server = http_os.createServer(function(request, response) {
           response.end(JSON.stringify(result.response.data));
         }
       } catch (error) {
-        console.log(error);
-        response.end(error.stack);
+        simpleResponseError(response, error);
       }
     }
   } catch (error) {
-    console.log(error);
-    response.end(error.stack);
+    simpleResponseError(response, error);
   }
 });
 server.setTimeout(0);

@@ -1,6 +1,7 @@
 import axios from "axios";
 import builtService from "@root/service/app/config.json";
 import { Toast } from "mint-ui";
+import Vue from "vue";
 var instance = axios.create({
   baseURL: "/" + builtService.prefix
 });
@@ -16,6 +17,7 @@ instance.interceptors.response.use(
       //没有开启内置服务器
       Toast("请开启内置的服务器");
     } else {
+      Toast("发生错误");
       console.error(error);
     }
   }
@@ -28,4 +30,5 @@ class Helper {
 }
 var helper = new Helper();
 
+Vue.prototype.$axios = helper;
 export default helper;
