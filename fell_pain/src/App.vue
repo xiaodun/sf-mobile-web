@@ -1,5 +1,5 @@
 <style lang="less">
-@import '~@/Localize-UI/Localize-UI.less';
+@import "~@/Localize-UI/Localize-UI.less";
 
 * {
   margin: 0;
@@ -9,8 +9,8 @@
 html,
 body,
 #app {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 
   width: 100%;
   height: 100%;
@@ -29,7 +29,7 @@ body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -44,10 +44,10 @@ body {
   width: 100%;
   height: 100%;
 
-  transition: .25s ease-in-out;
+  transition: 0.25s ease-in-out;
   transform: scale(0);
 
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
 
   img {
     position: absolute;
@@ -61,23 +61,13 @@ body {
     transform: scale(1);
   }
 }
-
 </style>
 <template>
   <div id="app">
-    <vue-touch
-      tag="div"
-      @doubletap="closeQrcode"
-    >
-      <div
-        id="qrcode-id"
-        ref="qrcode"
-      ></div>
+    <vue-touch tag="div" @doubletap="closeQrcode">
+      <div id="qrcode-id" ref="qrcode"></div>
     </vue-touch>
-    <LocalizeHeader
-      slot="header"
-      :title="$store.state.title"
-    >
+    <LocalizeHeader slot="header" :title="$store.state.title">
       <vue-touch
         v-if="$router.history.current.path != '/'"
         slot="left"
@@ -85,15 +75,14 @@ body {
         @tap="back"
       ></vue-touch>
       <LocalizeDropmenu
+        id="head-dropmenu-id"
         slot="right"
         :menu-item="[{icon:'icon-weibiaoti--',content:'二维码分享'},{icon:'icon-bug',content:isDebug?'关闭调试':'打开调试'}]"
         @tap-item="tapItem"
       ></LocalizeDropmenu>
     </LocalizeHeader>
     <div class="placehoder-top"></div>
-    <router-view>
-
-    </router-view>
+    <router-view></router-view>
   </div>
 </template>
 

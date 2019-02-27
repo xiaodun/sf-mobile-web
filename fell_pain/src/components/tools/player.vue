@@ -249,6 +249,17 @@ export default {
         this.$refs.parentDom.classList.remove("type-1");
       }
     },
+    onChangeDropmenu() {
+      //如果下拉菜单打开则隐藏视频播放组件  为了兼容微信浏览器
+
+      //判断下拉菜单是否打开
+      let dropmenuDom = document.querySelector("#head-dropmenu-id .menu");
+      if (dropmenuDom.clientWidth === 0) {
+        this.$refs.videoDom.style.display = "block";
+      } else {
+        this.$refs.videoDom.style.display = "none";
+      }
+    },
     player(argMove) {
       this.active.id = argMove.id;
       this.request_player_play(argMove);
@@ -257,6 +268,12 @@ export default {
   computed: {},
   mounted() {
     window.addEventListener("scroll", this.onScroll);
+    let isWenxin =
+      navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
+      "micromessenger";
+    if (isWenxin) {
+      document.addEventListener("touchend", this.onChangeDropmenu);
+    }
     this.request_player_get();
   },
   watch: {
@@ -267,6 +284,7 @@ export default {
   },
   beforeDestory() {
     window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("tapend", this.onChangeDropmenu);
   }
 };
 </script>
