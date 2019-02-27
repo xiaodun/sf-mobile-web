@@ -7,7 +7,6 @@
 
   .app-preview {
     width: 85%;
-    min-height: 200px;
     margin: 1em auto 1.5em auto;
     padding: 0.5em;
 
@@ -31,6 +30,7 @@
 
     .describe {
       color: #333;
+      padding: 0.5em;
     }
   }
 }
