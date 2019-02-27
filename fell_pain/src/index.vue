@@ -85,7 +85,7 @@ export default {
   },
   directives: {
     imgloaded(el) {
-      addEventListener(
+      el.addEventListener(
         "load",
         () => {
           el.style.display = "block";
