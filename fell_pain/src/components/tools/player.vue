@@ -241,7 +241,8 @@ export default {
       }
     },
     onScroll() {
-      let scrollTop = document.documentElement.scrollTop;
+      let scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
       if (scrollTop >= 10) {
         this.$refs.parentDom.classList.add("type-1");
       } else {
@@ -261,6 +262,7 @@ export default {
   watch: {
     model() {
       document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     }
   },
   beforeDestory() {
