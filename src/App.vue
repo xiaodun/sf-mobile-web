@@ -49,12 +49,17 @@ body {
 
   background-color: rgba(0, 0, 0, .5);
 
-  img {
+  img,
+  canvas {
     position: absolute;
     top: 50%;
     left: 50%;
 
     transform: translate(-50%, -50%);
+
+    border: 5px solid #fff;
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, .4),
+    0 0 4px 4px rgba(255, 255, 255, .7);
   }
 
   &.active {
@@ -65,7 +70,11 @@ body {
 </style>
 <template>
   <div id="app">
-    <vue-touch tag="div" @doubletap="closeQrcode">
+    <vue-touch
+      tag="div"
+      v-bind:tap-options="{taps:2,threshold:40,interval:1500,posThreshold:40}"
+      @tap="closeQrcode"
+    >
       <div id="qrcode-id" ref="qrcode"></div>
     </vue-touch>
     <LocalizeHeader slot="header" :title="$store.state.title">
