@@ -1,5 +1,5 @@
 <style lang="less">
-@import "~@/Localize-UI/Localize-UI.less";
+@import '~@/Localize-UI/Localize-UI.less';
 
 * {
   margin: 0;
@@ -9,8 +9,8 @@
 html,
 body,
 #app {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 
   width: 100%;
   height: 100%;
@@ -29,7 +29,7 @@ body {
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
   color: #2c3e50;
 
@@ -44,10 +44,10 @@ body {
   width: 100%;
   height: 100%;
 
-  transition: 0.25s ease-in-out;
+  transition: .25s ease-in-out;
   transform: scale(0);
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, .5);
 
   img {
     position: absolute;
@@ -61,6 +61,7 @@ body {
     transform: scale(1);
   }
 }
+
 </style>
 <template>
   <div id="app">
@@ -71,7 +72,7 @@ body {
       <vue-touch
         v-if="$router.history.current.path != '/'"
         slot="left"
-        class="iconfont icon-fanhui"
+        class="back-icon iconfont icon-fanhui"
         @tap="back"
       ></vue-touch>
       <LocalizeDropmenu

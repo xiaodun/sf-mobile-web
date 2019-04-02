@@ -25,7 +25,13 @@
 
     display: inline-block;
 
-    margin-right: 10px;
+    padding: 0 10px;
+
+    transition: all ease-in-out .35s;
+
+    &:active {
+      background-color: rgba(0, 0, 0, .5);
+    }
   }
 
   .right-cell {
@@ -47,14 +53,13 @@
 
 </style>
 <template>
-  <div class='Localize-header-vue'>
+  <div class="Localize-header-vue">
     <div class="left-cell">
       <slot name="left"></slot>
     </div>
     <span class="name">{{title}}</span>
 
     <div class="right-cell">
-
       <slot name="right"></slot>
     </div>
   </div>

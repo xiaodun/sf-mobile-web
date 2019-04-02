@@ -5,10 +5,13 @@
   position: relative;
 
   .header {
-    cursor: pointer;
+    padding: 0 10px;
 
-    .iconfont {
-      height: @header-height;
+    cursor: pointer;
+    transition: all linear .35s;
+
+    &:active {
+      background-color: rgba(0, 0, 0, .5);
     }
   }
 
@@ -19,6 +22,7 @@
     right: 0;
 
     width: 170px;
+    margin-top: 4px;
 
     background-color: #444;
 
@@ -37,25 +41,14 @@
 
 </style>
 <template>
-  <div
-    ref='dropmenu'
-    class='Localize-dropmenu-vue'
-  >
-    <div
-      @touchstart="toggle_menu($event)"
-      class="header"
-    >
-
+  <div ref="dropmenu" class="Localize-dropmenu-vue">
+    <vue-touch @tap="toggle_menu($event)" class="header">
       <slot name="header">
-        <i class="iconfont icon-gengduo"></i>
+        <div class="iconfont icon-gengduo"></div>
       </slot>
-    </div>
-    <div
-      class="menu"
-      v-show="isShowMenu"
-    >
+    </vue-touch>
+    <div class="menu" v-show="isShowMenu">
       <slot name="menu">
-
         <div
           @touchstart="tap_menu_item(item,index,$event)"
           class="item"
@@ -63,17 +56,13 @@
           v-for="(item,index) in menuItem"
         >
           <template v-if="item.icon">
-            <i
-              class="iconfont"
-              :class="item.icon"
-            ></i>
+            <i class="iconfont" :class="item.icon"></i>
             <span>{{item.content}}</span>
           </template>
           <template v-else>
             <span>{{item.content}}</span>
           </template>
         </div>
-
       </slot>
     </div>
   </div>
