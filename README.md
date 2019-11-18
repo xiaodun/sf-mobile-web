@@ -4,6 +4,8 @@
 
 用于探索、实践移动端的开发。
 
+![预览](https://github.com/xiaodun/sf-mobile-web/blob/master/preview.png)
+
 ## 运行须知
 
 同文件夹下 start-service.bat  用来启动内置的服务器。
