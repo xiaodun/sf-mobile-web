@@ -332,7 +332,7 @@ export default {
   },
   beforeDestory() {
     window.removeEventListener("scroll", this.onScroll);
-    document.removeEventListener("tapend", this.onChangeDropmenu);
+    document.removeEventListener("touchend", this.onChangeDropmenu);
   }
 };
 </script>
