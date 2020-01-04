@@ -126,15 +126,14 @@
                   },
             ]"
             :right="
-              item.isUser || item.isTemp
-                ? [
+              [
                     {
                       handler: () => request_delete_file(item, index),
                       content: '删除',
                       style: { background: '#fd593d', color: '#fff' },
                     },
                   ]
-                : []
+                
             "
             :title="item.name"
             :label="!item.isUser ? (item.isTemp ? '本地文件' : '系统') : '用户'"
@@ -272,9 +271,7 @@ export default {
           .request({
             method: "post",
             url: this.requestPlayerPrefix + "/delete",
-            data: {
-              id: argItem.id,
-            },
+            data: argItem
           })
           .then((response) => {
             Toast("删除成功");
