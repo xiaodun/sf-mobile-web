@@ -40,22 +40,25 @@
     <LocalizePagecontainer
       @change-page="change_page"
       :selected-index="selectedIndex"
-      :footer-list="['应用列表','我']"
+      :footer-list="['应用列表', '我']"
     >
       <LocalizePage>
         <vue-touch
           class="app-preview"
           @tap="in_app(item)"
-          v-for="(item,index) in appList"
+          v-for="(item, index) in appList"
           :key="index"
         >
-          <img :src="item.src" v-imgloaded alt>
-          <h3 class="name">{{item.name}}</h3>
-          <div class="describe">{{item.describe}}</div>
+          <img :src="item.src" v-imgloaded alt />
+          <h3 class="name">{{ item.name }}</h3>
+          <div class="describe">{{ item.describe }}</div>
         </vue-touch>
       </LocalizePage>
 
-      <LocalizePage>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, similique.</LocalizePage>
+      <LocalizePage
+        >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
+        similique.</LocalizePage
+      >
     </LocalizePagecontainer>
   </div>
 </template>
@@ -71,13 +74,6 @@ export default {
           },
           src: "/static/pc-mobile-connect.png",
           describe: "建立手机和电脑的视频传输通道。"
-        },
-        {
-          to: {
-            name: "compass"
-          },
-          src: "/static/compass-logo.jpg",
-          describe: "给迷路的你一个方向"
         }
       ],
       selectedIndex: 0

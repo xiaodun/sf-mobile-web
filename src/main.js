@@ -10,7 +10,6 @@ import { Loadmore } from "mint-ui";
 import MintUI from "mint-ui";
 import { Button } from "mint-ui";
 import store from "@/vuex/store.js";
-import AxiosHelper from "@/assets/lib/AxiosHelper";
 Vue.config.productionTip = false;
 Vue.use(MintUI);
 vueTouch.registerCustomEvent("doubletap", {
