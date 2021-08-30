@@ -1,10 +1,14 @@
 // external 在不同生命周期以及主程序之间共享参数
-(function () {
-  return function () {
+(function() {
+  return function() {
+    const commonList = ["c://sf-mobile-web", "/player", "/movie"];
+    let pathList = [...commonList];
+    pathList.splice(3, 0, "/system");
+    let userPathList = [...commonList];
+    userPathList.splice(3, 0, "/user");
+
     return {
-      createFloder: function (createFloder, external) {
-        let pathList = ["c://sf-mobile-web", "/player", "/system", "/movie"];
-        let userPathList = ["c://sf-mobile-web", "/player", "/user", "/movie"];
+      createFloder: function(createFloder, external) {
         createFloder(pathList);
         createFloder(userPathList);
         external.systemPath = pathList.join("");
@@ -70,8 +74,7 @@
         return external.userPath;
       },
       getDeleteFilePath(external, result) {
-
-        return this.getDownloadFilePath(external, result)
+        return this.getDownloadFilePath(external, result);
       },
       getDownloadFilePath(external, result) {
         let path = "";
@@ -84,7 +87,7 @@
         }
         return path;
       },
-      start: function () {
+      start: function() {
         let external = {};
         let pathList = ["c://sf-mobile-web", "/player", "/system", "/movie"];
         let userPathList = ["c://sf-mobile-web", "/player", "/user", "/movie"];
@@ -142,7 +145,7 @@
                 filePath = external.userPath + "/" + fileName;
               }
               console.log(filePath);
-              file_os.stat(filePath, function (error, stats) {
+              file_os.stat(filePath, function(error, stats) {
                 if (error) {
                   response.end(error);
                 }
@@ -165,10 +168,10 @@
 
                 var stream = file_os
                   .createReadStream(filePath, { start: start, end: end })
-                  .on("open", function () {
+                  .on("open", function() {
                     stream.pipe(response);
                   })
-                  .on("error", function (err) {
+                  .on("error", function(err) {
                     response.end(err);
                   });
               });
