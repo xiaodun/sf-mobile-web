@@ -19,6 +19,8 @@ vueTouch.registerCustomEvent("doubletap", {
 Vue.use(vueTouch, { name: "vue-touch" });
 Vue.component(Button.name, Button);
 Vue.component(Loadmore.name, Loadmore);
+import "@/assets/lib/AxiosHelper";
+
 /* eslint-disable no-new */
 new Vue({
   router,
