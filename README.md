@@ -1,29 +1,23 @@
-> 测试浏览器为Chrome 70.0.3538.110 
+# 手脑通
 
-# fell_pain
+![](./preview.png)
 
-用于探索、实践移动端的开发。
+一个网页播放器。
 
-![预览](https://github.com/xiaodun/sf-mobile-web/blob/master/preview.png)
+在 A 电脑启动应用,通过浏览器的形式,您可以在其它设备播放 A 电脑中的本地视频,同时提供了上传、下载、删除功能、读取本地视频的功能
 
-## 运行须知
+## 启动
 
-同文件夹下 start-service.bat  用来启动内置的服务器。
+`npm install`
 
-项目启动时会获取本机的IP地址，手机扫码访问的功能基于手机和电脑在同一个局域网内。
+windows 系统双击根目录的 start.bat
 
-## 应用介绍
+## 文件目录
 
-### 手脑通
+只支持设置"系统"和"用户"两种形式的路径。
 
-手机的内存与电脑相差甚远，传输视频文件很不方便。
+默认是"c://sf-mobile-web/player/system/movie"和"c://sf-mobile-web/player/user/movie"和
 
-这个应用借助node服务器，可以读取电脑指定目录的视频文件以列表的形式展现在前端，也可以上传文件至指定目录，因为是较为私人的信息，没有存在程序内。
+在"service/app/data/api/player/player/lifeCycle.js"中可以修改位置
 
-实现了添加本地视频到目录，下载、删除文件等功能。
-
-
-
-
-
-
+"系统"目录用来存储电脑上的本地视频,由使用者自行存放,"用户"目录用来存储使用者上传的视频
