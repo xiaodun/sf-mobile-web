@@ -55,12 +55,16 @@
             var filePath =
               external.systemPath + "/" + decodeURIComponent(command);
             if (!file_os.existsSync(filePath)) {
-              //去掉后缀
+              //用户上传的则没有后缀，直接放入的则有后缀
               let fileName = decodeURIComponent(command);
-              let index = fileName.lastIndexOf(".");
-              fileName = fileName.substring(0, index);
-              //到用户上传的文件夹下找
               filePath = external.userPath + "/" + fileName;
+              if(!file_os.existsSync(filePath)){
+                
+                let index = fileName.lastIndexOf(".");
+                fileName = fileName.substring(0, index);
+                filePath = external.userPath + "/" + fileName;
+              }
+              //到用户上传的文件夹下找
             }
             console.log(filePath);
             return {
@@ -86,7 +90,7 @@
           path = external.systemPath + "/" + result.id;
         }
         return path;
-      }
+      },
     };
   };
 })();
