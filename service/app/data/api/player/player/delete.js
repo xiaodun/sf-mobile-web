@@ -1,5 +1,5 @@
-(function () {
-  return function (argData, argParams) {
+(function() {
+  return function(argData, argParams) {
     //argData 数据的副本
     if (argParams.isUser) {
       let index = argData.findIndex((el, index, arr) => {
@@ -17,24 +17,21 @@
         response: {
           //返回的数据
           code: 200,
-          data: {},
-        },
+          data: {}
+        }
       };
-    }
-    else {
+    } else {
       //系统文件
       return {
-
+        isUserFolder: argParams.isUserFolder,
         isDelete: true,
         id: argParams.id,
         response: {
           //返回的数据
           code: 200,
-          data: {},
-        },
+          data: {}
+        }
       };
-
     }
-
   };
 })();

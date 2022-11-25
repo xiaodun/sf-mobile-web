@@ -136,7 +136,7 @@
                 
             "
             :title="item.name"
-            :label="!item.isUser ? (item.isTemp ? '本地文件' : '系统') : '用户'"
+            :label="getlabel(item)"
             @click.native="player(item)"
             :class="active.id === item.id ? 'active' : ''"
             class="move"
@@ -230,17 +230,26 @@ export default {
       requestPlayerPrefix: "/player/player",
       active: {
         src: "",
-        id: "",
+        id: ""
       },
-      moveList: null,
+      moveList: null
     };
   },
+
   methods: {
+    getlabel(item) {
+      if (item.isUser || item.isUserFolder) {
+        return "用户";
+      } else if (item.isTemp) {
+        return "本地文件";
+      }
+      return "系统";
+    },
     on_change_video(argStep) {
       //切换视频
       //当前视频再列表的位置的位置
       const id = this.active.id;
-      let index = this.moveList.findIndex((item) => {
+      let index = this.moveList.findIndex(item => {
         if (item.id === id) {
           return true;
         }
@@ -260,7 +269,7 @@ export default {
         name: argFile.name,
         isTemp: true,
         id: ((Math.random() * 100000) | 0) + argFile.name,
-        src: URL.createObjectURL(argFile),
+        src: URL.createObjectURL(argFile)
       });
     },
     request_delete_file(argItem, index) {
@@ -273,7 +282,7 @@ export default {
             url: this.requestPlayerPrefix + "/delete",
             data: argItem
           })
-          .then((response) => {
+          .then(response => {
             Toast("删除成功");
 
             this.request_player_get();
@@ -292,11 +301,11 @@ export default {
           url: this.requestPlayerPrefix + "/download",
           data: {
             id: argItem.isUser ? argItem.id : argItem.name,
-            isUser: argItem.isUser,
+            isUser: argItem.isUser || argItem.isUserFolder
           },
-          responseType: "blob",
+          responseType: "blob"
         })
-        .then((response) => {
+        .then(response => {
           var blob = response.data;
           var a = document.createElement("a");
           a.download = argItem.name;
@@ -313,9 +322,9 @@ export default {
         .request({
           method: "post",
           url: this.requestPlayerPrefix + "/get",
-          data: {},
+          data: {}
         })
-        .then((response) => {
+        .then(response => {
           this.$refs.videoDom.src = undefined;
           this.moveList = response.data;
         });
@@ -366,9 +375,8 @@ export default {
     player(argMove) {
       this.active.id = argMove.id;
       this.request_player_play(argMove);
-    },
+    }
   },
-  computed: {},
   mounted() {
     window.addEventListener("scroll", this.onScroll);
     let isWenxin =
@@ -383,11 +391,11 @@ export default {
     model() {
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-    },
+    }
   },
   beforeDestory() {
     window.removeEventListener("scroll", this.onScroll);
     document.removeEventListener("touchend", this.onChangeDropmenu);
-  },
+  }
 };
 </script>

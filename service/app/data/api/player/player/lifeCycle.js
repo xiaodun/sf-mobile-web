@@ -27,7 +27,9 @@
               let stats = file_os.statSync(filedir);
               if (stats.isFile()) {
                 moveList.push({
-                  name: filename
+                  name: filename,
+                  isUserFolder: true,
+                  id: filename
                 });
               }
             }
@@ -58,8 +60,7 @@
               //用户上传的则没有后缀，直接放入的则有后缀
               let fileName = decodeURIComponent(command);
               filePath = external.userPath + "/" + fileName;
-              if(!file_os.existsSync(filePath)){
-                
+              if (!file_os.existsSync(filePath)) {
                 let index = fileName.lastIndexOf(".");
                 fileName = fileName.substring(0, index);
                 filePath = external.userPath + "/" + fileName;
@@ -82,7 +83,7 @@
       },
       getDownloadFilePath(external, result) {
         let path = "";
-        if (result.isUser === true) {
+        if (result.isUser || result.isUserFolder) {
           //用户上传
           path = external.userPath + "/" + result.id;
         } else {
@@ -90,7 +91,7 @@
           path = external.systemPath + "/" + result.id;
         }
         return path;
-      },
+      }
     };
   };
 })();
