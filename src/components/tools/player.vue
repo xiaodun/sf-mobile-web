@@ -127,12 +127,17 @@
             ]"
             :right="
               [
+                  item.isUserFolder ?  {
+                      handler: () => request_move_file(item, index),
+                      content: '转 移',
+                      style: { background: '#BFACE2', color: '#ECF2FF' },
+                    }:false,
                     {
                       handler: () => request_delete_file(item, index),
                       content: '删除',
                       style: { background: '#fd593d', color: '#fff' },
                     },
-                  ]
+                  ].filter(Boolean)
                 
             "
             :title="item.name"
@@ -288,6 +293,19 @@ export default {
             this.request_player_get();
           });
       }
+    },
+    request_move_file(argItem, index) {
+      this.$axios
+        .request({
+          method: "post",
+          url: this.requestPlayerPrefix + "/move",
+          data: argItem
+        })
+        .then(response => {
+          Toast("转移成功");
+
+          this.request_player_get();
+        });
     },
     upload_success() {
       this.request_player_get();
