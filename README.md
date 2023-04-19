@@ -21,3 +21,5 @@ windows 系统双击根目录的 start.bat
 在"service/app/data/api/player/player/lifeCycle.js"中可以修改位置
 
 "系统"目录用来存储电脑上的本地视频,由使用者自行存放。"用户"目录用来存储使用者上传的视频,也可以用来存放带后缀的视频格式。
+
+"用户"目录下的文件可以转移到'系统'目录
